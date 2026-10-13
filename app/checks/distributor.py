@@ -40,7 +40,7 @@ def run(case: Case) -> CheckResult:
             evidence.append(ev("policy", case.sop(cfg["clause_invalid"]),
                                "invalid ARN: processed in the Direct plan of the same scheme/option; no commission"))
             return CheckResult(check_id=cid, result="FAIL", sop_clause=case.sop(cfg["clause_invalid"]), evidence=evidence,
-                               reason_codes=[reason], data={"modification": "switch to Direct plan"})
+                               reason_codes=[reason], data={"modification": "switch to Direct plan", "problems": v["arn_problems"]})
         case.warnings.append(f"Invalid ARN under SOP v{case.policy.sop_version} 7.2: processed in Regular; reprocess "
                              f"to Direct if a valid ARN is not received within 30 days.")
         return CheckResult(check_id=cid, result="FAIL", sop_clause=case.sop(cfg["clause_invalid"]), evidence=evidence,

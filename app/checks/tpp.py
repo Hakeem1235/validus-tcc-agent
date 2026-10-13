@@ -105,7 +105,7 @@ def run(case: Case) -> CheckResult:
     acct = last4(t.get("remitter_account_masked")) or x.remitter_account_last4
     payer_name = t.get("remitter_name") or x.remitter_name
     utr = t.get("utr") or x.utr
-    if not t and not acct and not mode and x.amount_inr is None:
+    if not t and not acct and not payer_name and not mode:
         return na(cid, "no payment received yet", case.sop(cfg["clause_definition"]))
     if mode == "CASH" or x.is_cash:
         return CheckResult(check_id=cid, result="NOT_APPLICABLE", sop_clause=case.sop(cfg["clause_proof"]),

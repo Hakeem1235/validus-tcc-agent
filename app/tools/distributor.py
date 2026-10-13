@@ -45,10 +45,10 @@ def validate(arn: str | None, euin: str | None, amc: str | None, on_date: date) 
     out["arn_status"] = r0["arn_status"]
     out["arn_valid_till"] = r0["arn_valid_till"]
     if r0["arn_status"] != "ACTIVE":
-        out["arn_problems"].append(f"ARN status {r0['arn_status']}")
+        out["arn_problems"].append(f"status {r0['arn_status']}")
     vt = parse_date(r0["arn_valid_till"])
     if vt is None or vt < on_date:
-        out["arn_problems"].append(f"ARN validity ended {r0['arn_valid_till']} (request date {on_date.isoformat()})")
+        out["arn_problems"].append(f"validity ended {r0['arn_valid_till']}, before the request date {on_date.isoformat()}")
     emp_col = {"NMF": "empanelled_nmf", "TMF": "empanelled_tmf"}.get(amc or "")
     out["empanelled"] = r0.get(emp_col) if emp_col else None
     if emp_col and r0.get(emp_col) != "Y":
