@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TCC Desk Agent</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="config.js"></script>
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <span class="logo">TCC</span>
+    <div>
+      <h1>TCC Desk Agent</h1>
+      <p class="sub">Validus · Transaction Compliance Check · proposes, never acts</p>
+    </div>
+  </div>
+  <div class="api">
+    <label for="apiBase">API</label>
+    <input id="apiBase" type="url" spellcheck="false" placeholder="https://your-api.up.railway.app">
+    <span id="health" class="dot" title="not checked"></span>
+    <button id="saveApi" class="ghost">Connect</button>
+  </div>
+</header>
+
+<main class="grid">
+  <section class="card" id="compose">
+    <div class="card-head">
+      <h2>Incoming email</h2>
+      <select id="sample" aria-label="Load a sample request">
+        <option value="">Load sample…</option>
+      </select>
+    </div>
+    <form id="form">
+      <div class="row2">
+        <label>Request ID<input id="request_id" required></label>
+        <label>Received at<input id="received_at" required placeholder="2026-10-08T11:00:00+05:30"></label>
+      </div>
+      <label>From<input id="from" required placeholder="Name <email@example.com>"></label>
+      <label>Subject<input id="subject"></label>
+      <label>Body<textarea id="body" rows="9" required></textarea></label>
+      <label>Attachments
+        <input id="files" type="file" multiple>
+      </label>
+      <ul id="attList" class="atts"></ul>
+      <div class="actions">
+        <button type="submit" id="submit">Run TCC check</button>
+        <button type="button" id="clear" class="ghost">Clear</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="card" id="result">
+    <div class="empty" id="empty">
+      <p>Load a sample or write an email, then run the check.</p>
+      <p class="muted">The agent identifies the folio and transaction, runs eight SOP checks against the five data systems, decides the outcome by SOP 9.2, names the approver per Annexure A, and drafts a reply.</p>
+    </div>
+    <div id="loading" class="loading" hidden><span class="spinner"></span> Checking… (a few seconds with the LLM on)</div>
+    <div id="error" class="errorbox" hidden></div>
+    <div id="out" hidden>
+      <div class="verdict">
+        <div>
+          <div class="label">Outcome</div>
+          <div id="outcome" class="badge"></div>
+        </div>
+        <div>
+          <div class="label">Approval</div>
+          <div id="approval" class="strong"></div>
+        </div>
+        <div>
+          <div class="label">Request type</div>
+          <div id="rtype" class="strong"></div>
+        </div>
+      </div>
+      <div id="reasons" class="chips"></div>
+      <dl class="resolved" id="resolved"></dl>
+
+      <h3>Checks</h3>
+      <div id="checks" class="checks"></div>
+
+      <h3>Draft reply</h3>
+      <div class="reply">
+        <div class="reply-meta"><span>To: <b id="rto"></b></span><span>Subject: <b id="rsubj"></b></span></div>
+        <pre id="rbody"></pre>
+        <button id="copyReply" class="ghost small">Copy reply</button>
+      </div>
+
+      <div id="warnBlock" hidden>
+        <h3>Warnings</h3>
+        <ul id="warnings" class="warnings"></ul>
+      </div>
+
+      <details class="trace">
+        <summary>Trace &amp; audit</summary>
+        <div id="trace"></div>
+      </details>
+      <details class="trace">
+        <summary>Raw JSON</summary>
+        <pre id="raw"></pre>
+      </details>
+    </div>
+  </section>
+</main>
+<footer class="foot">Synthetic data · Decisions are proposals for a Checker / Ops Manager where the SOP requires approval.</footer>
+<script src="app.js"></script>
+</body>
+</html>

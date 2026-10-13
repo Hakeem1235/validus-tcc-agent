@@ -100,12 +100,35 @@ Invalid JSON gets the same treatment.
 | `trace.latency_ms`, `trace.tool_calls`, `trace.model_calls[].purpose` | finer-grained trace |
 | `error` | only on the safe fallback path |
 
+## Frontend
+
+`frontend/` is a static page (HTML/CSS/JS, no build step). It lets you:
+- load the R01–R10 samples or write an email and attach files
+- see the outcome, approver, reason codes, all 8 checks with evidence and clause, the draft reply, warnings and the trace
+
+To run it locally, start the API, then:
+
+```bash
+python -m http.server 5500 --directory frontend
+```
+
+Open http://localhost:5500. The API URL comes from `frontend/config.js` and can be overridden in the page header.
+
 ## Deploy
 
-- **Render:** `render.yaml` (Docker). Set `LLM_API_KEY` in the dashboard.
-- **Railway / Heroku-style hosts:** `Procfile`.
+**API on Railway** (`railway.json`, Docker):
+1. Go to railway.com → New Project → Deploy from GitHub repo, and pick this repo.
+2. Under Variables, set `LLM_API_KEY`. Optionally set `LLM_MODEL`, and `CORS_ORIGINS=https://<site>.netlify.app`.
+3. Under Settings → Networking, click Generate Domain.
+4. Check it: `https://<app>.up.railway.app/health` should return `{"status":"ok"}`.
 
-The image runs `prepare_data.py` at build time and serves on `$PORT`.
+The image runs `prepare_data.py` at build time and serves on Railway's `$PORT`.
+
+**Frontend on Netlify** (`netlify.toml` publishes `frontend/`):
+1. Put the Railway URL in `frontend/config.js` (`window.TCC_API_BASE = "https://<app>.up.railway.app"`) and push.
+2. Go to app.netlify.com → Add new site → Import from GitHub, and pick this repo. No build command is needed.
+
+**Other hosts:** `render.yaml` (Render) and `Procfile` (Heroku-style).
 
 ## Layout
 

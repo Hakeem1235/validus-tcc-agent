@@ -2,9 +2,11 @@
 from __future__ import annotations
 
 import json
+import os
 import logging
 
 from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app import config, llm
@@ -16,6 +18,15 @@ log = logging.getLogger("tcc")
 
 app = FastAPI(title="Validus TCC Desk Compliance Agent", version="1.0.0",
               description="Proposes TCC outcomes for emailed requests. Proposes only; never sends or processes.")
+
+# The static frontend (frontend/, e.g. on Netlify) calls this API from another origin.
+# CORS_ORIGINS: comma-separated list, default "*" (no cookies/credentials are used).
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[o.strip() for o in os.getenv("CORS_ORIGINS", "*").split(",") if o.strip()],
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["*"],
+)
 
 
 @app.on_event("startup")

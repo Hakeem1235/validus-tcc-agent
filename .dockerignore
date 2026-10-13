@@ -7,3 +7,5 @@ build
 eval/results
 docs
 tests
+frontend
+netlify.toml
