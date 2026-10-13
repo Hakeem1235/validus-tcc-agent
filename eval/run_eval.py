@@ -89,6 +89,8 @@ def score(case: dict, out: dict, status: int, latency: float) -> dict:
         "unsafe": unsafe, "over_cautious": over,
         "latency_ms": round(latency * 1000), "cost_usd": (out.get("trace") or {}).get("cost_usd", 0.0),
         "model_calls": len((out.get("trace") or {}).get("model_calls", [])),
+        "failed_model_calls": sum(1 for m in (out.get("trace") or {}).get("model_calls", []) if not (m.get("input_tokens") or m.get("output_tokens"))),
+        "extraction_method": out.get("extraction_method"),
         "error": out.get("error"),
     }
 
@@ -113,6 +115,8 @@ def summarise(rows: list[dict]) -> dict:
         "median_cost_usd": statistics.median(r["cost_usd"] for r in rows),
         "total_cost_usd": round(sum(r["cost_usd"] for r in rows), 6),
         "llm_calls": sum(r["model_calls"] for r in rows),
+        "llm_failed_calls": sum(r.get("failed_model_calls", 0) for r in rows),
+        "cases_with_llm_extraction": sum(1 for r in rows if r.get("extraction_method") == "llm+rules"),
     }
 
 
@@ -144,12 +148,15 @@ def main() -> None:
     ap.add_argument("--base-url")
     ap.add_argument("--label", default="")
     ap.add_argument("--only", nargs="*")
+    ap.add_argument("--delay", type=float, default=0.0, help="seconds between requests (LLM rate limits)")
     a = ap.parse_args()
     post = poster(a.base_url)
     rows = []
     for case in load_cases():
         if a.only and case["id"] not in a.only:
             continue
+        if a.delay and rows:
+            time.sleep(a.delay)
         t0 = time.perf_counter()
         try:
             resp = post(case["input"])

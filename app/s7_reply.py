@@ -258,7 +258,7 @@ def draft(case: Case, d: Decision, checks: list[CheckResult]) -> tuple[DraftRepl
         candidate = DraftReply(to=base.to, subject=base.subject, body=text)
         problems = guard(case, d, candidate)
         # facts preserved? every number in the template must still be present
-        for num in set(re.findall(r"\d[\d,./-]{2,}", base.body)):
+        for num in {n.rstrip(".,/-") for n in re.findall(r"\d[\d,./-]{2,}", base.body)}:
             if num not in text:
                 problems.append(f"lost fact '{num}'")
         if problems:

@@ -19,12 +19,14 @@ CLAUSES_PATH = BUILD_DIR / "clauses.json"
 RULES_PATH = ROOT / "app" / "policy" / "rules.yaml"
 
 LLM_PROVIDER = os.getenv("LLM_PROVIDER", "gemini").lower()  # gemini | none
-LLM_MODEL = os.getenv("LLM_MODEL", "gemini-2.5-flash")
+LLM_MODEL = os.getenv("LLM_MODEL", "gemini-3.1-flash-lite")
 LLM_API_KEY = os.getenv("LLM_API_KEY") or os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY") or ""
 LLM_TIMEOUT_S = float(os.getenv("LLM_TIMEOUT_S", "30"))
+LLM_RETRIES = int(os.getenv("LLM_RETRIES", "2"))  # retries on 429/503/504 with backoff
 
 # USD per 1M tokens (input, output). Override with LLM_PRICE_IN / LLM_PRICE_OUT.
 PRICE_TABLE = {
+    "gemini-3.1-flash-lite": (0.25, 1.50),  # ai.google.dev/gemini-api/docs/pricing (standard tier)
     "gemini-2.5-flash": (0.30, 2.50),
     "gemini-2.5-flash-lite": (0.10, 0.40),
     "gemini-2.0-flash": (0.10, 0.40),

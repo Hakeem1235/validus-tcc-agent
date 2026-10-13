@@ -36,7 +36,7 @@ python eval/run_eval.py                               # in-process eval; or --ba
 | var | default | purpose |
 |---|---|---|
 | `LLM_PROVIDER` | `gemini` | `gemini` or `none` |
-| `LLM_MODEL` | `gemini-2.5-flash` | any Gemini model id |
+| `LLM_MODEL` | `gemini-3.1-flash-lite` | any Gemini model id |
 | `LLM_API_KEY` | — | Gemini key (`GEMINI_API_KEY` / `GOOGLE_API_KEY` also read). Without it the service runs fully on rules + templates |
 | `LLM_PRICE_IN` / `LLM_PRICE_OUT` | price table in [app/config.py](app/config.py) | USD per 1M tokens for `trace.cost_usd` |
 | `LLM_TIMEOUT_S` | `30` | per-call timeout |

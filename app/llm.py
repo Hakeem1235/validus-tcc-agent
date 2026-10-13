@@ -64,13 +64,19 @@ def generate(prompt: str, *, purpose: str, json_schema: dict | None = None, imag
         cfg["response_json_schema"] = json_schema
     if config.LLM_MODEL.startswith("gemini-2.5"):
         cfg["thinking_config"] = types.ThinkingConfig(thinking_budget=0)
-    t0 = time.perf_counter()
-    try:
-        resp = _gemini().models.generate_content(model=config.LLM_MODEL, contents=parts,
-                                                 config=types.GenerateContentConfig(**cfg))
-    except Exception as e:  # network, quota, auth, schema
-        _record(config.LLM_MODEL, None, purpose, False, t0)
-        raise LLMUnavailable(f"{type(e).__name__}: {e}") from e
+    resp = None
+    for attempt in range(config.LLM_RETRIES + 1):
+        t0 = time.perf_counter()
+        try:
+            resp = _gemini().models.generate_content(model=config.LLM_MODEL, contents=parts,
+                                                     config=types.GenerateContentConfig(**cfg))
+            break
+        except Exception as e:  # network, quota, auth, schema
+            _record(config.LLM_MODEL, None, purpose, False, t0)
+            transient = any(c in str(e) for c in ("429", "RESOURCE_EXHAUSTED", "503", "UNAVAILABLE", "504", "DEADLINE"))
+            if not transient or attempt == config.LLM_RETRIES:
+                raise LLMUnavailable(f"{type(e).__name__}: {str(e)[:300]}") from e
+            time.sleep(min(2 ** attempt * 2, 20))
     _record(config.LLM_MODEL, getattr(resp, "usage_metadata", None), purpose, True, t0)
     text = resp.text or ""
     if not text:

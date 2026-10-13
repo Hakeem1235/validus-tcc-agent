@@ -1,6 +1,7 @@
 """Test fixtures: a copy of build/tcc.db plus synthetic rows (tests only; raw data untouched)."""
 from __future__ import annotations
 
+import os
 import shutil
 import sqlite3
 import subprocess
@@ -11,6 +12,7 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
+os.environ["LLM_PROVIDER"] = "none"  # unit tests are deterministic; LLM paths are exercised by the eval
 sys.path.insert(0, str(ROOT))
 
 from app import config  # noqa: E402

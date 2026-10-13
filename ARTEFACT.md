@@ -118,8 +118,22 @@ Reason codes covered:
 
 ## 8. Cost per request
 
-- **Median cost per request is $0.00 with 0 model calls.** No LLM key was available in this environment, so every run used the rule-based extraction and template replies (`extraction_method: "rules"`, `reply_method: "template"`).
-- **With `LLM_API_KEY` set**, the trace records real `usage_metadata` token counts per call (extraction, vision per image, reply polish) and prices them from [app/config.py](app/config.py). That cost has **not been measured yet**: run `python eval/run_eval.py --label llm` with a key to get it.
+Measured with Gemini enabled: `gemini-3.1-flash-lite`, priced at $0.25 / $1.50 per 1M input / output tokens from the [official pricing page](https://ai.google.dev/gemini-api/docs/pricing). Run: [20261013T072120Z_llm.md](eval/results/20261013T072120Z_llm.md), 44 cases, paced at 4s.
+
+| metric | value |
+|---|---|
+| outcome / reason / check / approver accuracy | 100% / 100% / 100% / 100% |
+| unsafe / over-cautious errors | 0 / 0 |
+| cases where LLM extraction was used | 44 / 44 |
+| LLM calls (extraction, vision per image, reply polish) / failed | 90 / 0 |
+| **median cost per request** | **$0.000907** |
+| total cost, 44 requests | $0.043 |
+| median latency per request | 4.8 s (in-process; rules-only path: 8 ms) |
+
+Notes:
+- **A typical request makes two calls:** one extraction and one reply polish. Each scanned image adds a vision call: R03 cost $0.0026 and R10 $0.0017.
+- **An earlier unpaced run** ([20261013T071234Z_llm.md](eval/results/20261013T071234Z_llm.md)) hit rate limits after 10 cases. Those requests fell back to rules and templates and still scored 44/44. That run is why the LLM wrapper now retries 429/503/504 with backoff.
+- **`gemini-2.5-flash`** (the brief's default family) is no longer available to new keys. `gemini-3.5/3.8-flash` timed out or reported overload during testing.
 
 ## 9. Not built, fragile, next
 
@@ -136,7 +150,6 @@ Reason codes covered:
 - Interpretations D1–D8 in [docs/analysis.md](docs/analysis.md).
 
 **Next:**
-1. Run the eval with Gemini enabled and record cost and latency.
-2. Add 200+ real labelled desk cases as a held-out set.
-3. Shadow mode against makers for a month.
-4. Then consider auto-sending maker-only outcomes with no warnings (see FUTURE_WORKFLOW §4).
+1. Add 200+ real labelled desk cases as a held-out set.
+2. Shadow mode against makers for a month.
+3. Then consider auto-sending maker-only outcomes with no warnings (see FUTURE_WORKFLOW §4).
