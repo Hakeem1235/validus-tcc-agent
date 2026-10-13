@@ -1,0 +1,183 @@
+# Versioned TCC policy as data. Code reads this; it never hardcodes thresholds, clause ids or outcomes.
+# Sources: Validus TCC-SOP v4.1 (docx), v3.2 (pdf), Tungabhadra client addendum TMF-ADD-02 (pdf).
+
+documents:
+  - doc: TCC-SOP
+    version: "4.1"
+    effective_from: "2026-08-01"
+    amc_scope: ALL
+    source_file: Validus_TCC_SOP_v4.1.docx
+  - doc: TCC-SOP
+    version: "4.0"
+    effective_from: "2026-06-01"
+    amc_scope: ALL
+    available: false          # listed in Annex D, not in the data room
+    fallback_version: "3.2"   # Annex D: 4.0 changed only Annex A + automation role (text identical to 3.2 there)
+  - doc: TCC-SOP
+    version: "3.2"
+    effective_from: "2025-01-01"
+    amc_scope: ALL
+    source_file: Validus_TCC_SOP_v3.2.pdf
+  - doc: TMF-ADD-02
+    version: "02"
+    effective_from: "2026-09-15"
+    amc_scope: TMF
+    addendum: true
+    source_file: Tungabhadra_MF_Client_Addendum_TMF-ADD-02.pdf
+  - doc: TMF-ADD-01
+    version: "01"
+    effective_from: "2026-03-01"
+    amc_scope: TMF
+    addendum: true
+    available: false          # superseded by TMF-ADD-02; not in the data room
+
+# 9.2 precedence (first wins) and Annexure A approval
+outcome_precedence: [INVALID_REQUEST, REJECT, HOLD_AND_REFER, PEND, PROCEED_MODIFIED, PROCEED]
+approval:
+  PROCEED:          {required: false, role: null}
+  PEND:             {required: false, role: null}
+  INVALID_REQUEST:  {required: false, role: null}
+  PROCEED_MODIFIED: {required: true,  role: CHECKER}
+  REJECT:           {required: true,  role: CHECKER}
+  HOLD_AND_REFER:   {required: true,  role: OPS_MANAGER}
+
+# reason code -> outcome (9.3 list; KYC_ON_HOLD/REJECTED depend on request type, see kyc.matrix)
+reason_outcome:
+  KYC_ON_HOLD: REJECT
+  KYC_REJECTED: REJECT
+  KYC_REGISTERED_NEW_AMC: PEND
+  KYC_UNABLE_TO_VERIFY: PEND
+  TPP_NO_EXCEPTION: REJECT
+  TPP_DOCS_MISSING: PEND
+  BANK_PROOF_REQUIRED: PEND
+  MINOR_ATTAINED_MAJORITY: PEND
+  COB_COOLING: PEND
+  HIGH_RISK_CONTACT_COB: HOLD_AND_REFER
+  ARN_INVALID_DIRECT: PROCEED_MODIFIED
+  EUIN_MISSING: PROCEED
+  REFERRAL_TRIGGER: HOLD_AND_REFER
+  STOP_LOCK: HOLD_AND_REFER
+  CASH_LIMIT_BREACH: REJECT
+  FOLIO_NOT_FOUND: INVALID_REQUEST
+  FOLIO_PAN_MISMATCH: INVALID_REQUEST
+
+kyc:
+  clause_matrix: "4.2"
+  stale_after_hours: 24            # 4.5; measured from request received_at (see README)
+  # 4.2 matrix: status -> column -> action
+  #   columns: new_folio_new_amc | new_folio_amc_held | additional | redemption
+  #   actions: ACCEPT | PEND_NEW_AMC | NOT_ACCEPT | REFER | PEND_UTV
+  matrix:
+    VALIDATED:     {new_folio_new_amc: ACCEPT,       new_folio_amc_held: ACCEPT,     additional: ACCEPT,     redemption: ACCEPT}
+    REGISTERED:    {new_folio_new_amc: PEND_NEW_AMC, new_folio_amc_held: ACCEPT,     additional: ACCEPT,     redemption: ACCEPT}
+    ON_HOLD:       {new_folio_new_amc: NOT_ACCEPT,   new_folio_amc_held: NOT_ACCEPT, additional: NOT_ACCEPT, redemption: REFER}
+    REJECTED:      {new_folio_new_amc: NOT_ACCEPT,   new_folio_amc_held: NOT_ACCEPT, additional: NOT_ACCEPT, redemption: REFER}
+    UNDER_PROCESS: {new_folio_new_amc: PEND_UTV,     new_folio_amc_held: PEND_UTV,   additional: PEND_UTV,   redemption: PEND_UTV}
+    NOT_AVAILABLE: {new_folio_new_amc: PEND_UTV,     new_folio_amc_held: PEND_UTV,   additional: PEND_UTV,   redemption: PEND_UTV}
+    NOT_REACHABLE: {new_folio_new_amc: PEND_UTV,     new_folio_amc_held: PEND_UTV,   additional: PEND_UTV,   redemption: PEND_UTV}
+  # NOT_ACCEPT on a purchase/SIP -> REJECT (decision D1: "not accepted", money received, refund);
+  # REFER on a redemption -> HOLD_AND_REFER, approver Operations Manager.
+  action_outcome:
+    NOT_ACCEPT: REJECT
+    REFER: HOLD_AND_REFER
+    PEND_NEW_AMC: PEND
+    PEND_UTV: PEND
+  status_reason:
+    ON_HOLD: KYC_ON_HOLD
+    REJECTED: KYC_REJECTED
+  clauses:
+    ACCEPT: "4.2"
+    PEND_NEW_AMC: "4.3"
+    NOT_ACCEPT: "4.4"
+    REFER: "4.2"
+    PEND_UTV: "4.5"
+
+tpp:
+  clause_definition: "5.1"
+  clause_minor: "5.4"
+  clause_proof: "5.6"
+  clause_outcome: "5.7"
+  # 5.6: documents that identify a paying account that is not registered on the folio
+  proof_documents: [BANK_STATEMENT, TRANSFER_INSTRUCTION, PASSBOOK, BANK_LETTER, BANKER_CERTIFICATE, CANCELLED_CHEQUE]
+  # 5.3 exceptions per version: category -> required documents (every one must be enclosed)
+  exceptions:
+    "4.1":
+      employer:            [TPP_DECLARATION, EMPLOYER_DECLARATION, EMPLOYEE_LIST, KYC_ACK_INVESTOR, KYC_ACK_THIRD_PARTY]
+      custodian:           [TPP_DECLARATION, CUSTODIAN_SEBI_REG, KYC_ACK_INVESTOR, KYC_ACK_THIRD_PARTY]
+      amc_commission:      [TPP_DECLARATION, DISTRIBUTOR_LIST]
+      corporate_incentive: [TPP_DECLARATION, CORPORATE_LIST, KYC_ACK_THIRD_PARTY]
+    "3.2":
+      employer:            [TPP_DECLARATION, EMPLOYER_DECLARATION, EMPLOYEE_LIST, KYC_ACK_INVESTOR, KYC_ACK_THIRD_PARTY]
+      custodian:           [TPP_DECLARATION, CUSTODIAN_SEBI_REG, KYC_ACK_INVESTOR, KYC_ACK_THIRD_PARTY]
+      amc_commission:      [TPP_DECLARATION, DISTRIBUTOR_LIST]
+      corporate_incentive: [TPP_DECLARATION, CORPORATE_LIST, KYC_ACK_THIRD_PARTY]
+      minor_related:       [TPP_DECLARATION, KYC_PAYER]     # v3.2 5.3/5.4 only, capped below
+  minor_related_cap_inr: {"3.2": 50000}
+  # 5.4 who may pay into a minor folio without it being a third-party payment
+  minor_allowed_payers:
+    "4.1": [minor, parent, guardian]
+    "3.2": [minor, guardian]      # v3.2: minor's own or joint minor+guardian; others via 5.3 minor_related
+  document_labels:
+    TPP_DECLARATION: Third Party Payment Declaration (signed)
+    EMPLOYER_DECLARATION: Employer declaration on company letterhead
+    EMPLOYEE_LIST: List of employee(s) with employee code, PAN and KYC details, on letterhead
+    KYC_ACK_INVESTOR: KYC acknowledgement of the investor
+    KYC_ACK_THIRD_PARTY: KYC acknowledgement of the third party (employer / custodian / corporate)
+    CUSTODIAN_SEBI_REG: Custodian SEBI registration number and validity
+    DISTRIBUTOR_LIST: List of distributors with ARN
+    CORPORATE_LIST: List of agents/dealers on letterhead with PAN and KYC
+    KYC_PAYER: KYC of the payer
+    BANK_STATEMENT: Bank statement or transfer instruction showing the debit from your account
+    EXISTING_BANK_PROOF: Proof of the existing registered bank account (cancelled cheque / statement / bank letter)
+    NEW_BANK_PROOF: Proof of the new bank account (cancelled cheque with name printed / statement not older than 3 months / bank letter)
+    CHANGE_OF_STATUS_FORM: Change of status form (minor to major) with the major's own KYC and new bank details
+
+minor:
+  clause: "5.5"
+  majority_age: 18
+
+bank:
+  clause_payout: "6.2"
+  clause_cob_proof: "6.3"
+  new_account_proof: [CANCELLED_CHEQUE, BANK_STATEMENT, PASSBOOK, BANK_LETTER]
+  existing_account_proof: [EXISTING_BANK_PROOF]
+  # TMF-ADD-02 A2: existing-account proof mandatory; in-person verification not accepted
+  addendum_overrides:
+    TMF-ADD-02:
+      clause_cob_proof: "A2"
+      in_person_accepted: false
+
+cob:
+  clause_cooling: "6.4"
+  clause_high_risk: "6.5"
+  cooling_days: {"4.1": 10, "3.2": 0}     # v3.2 6.4: COB with redemption processed separately; no cooling
+  contact_change_window_days: 30
+
+distributor:
+  clause_validate: "7.1"
+  clause_invalid: "7.2"
+  clause_euin: "7.3"
+  clause_sip_tenure: "7.4"
+  # v4.1: invalid ARN -> Direct (PROCEED_MODIFIED, ARN_INVALID_DIRECT). v3.2: stays Regular, 30 days to fix (no code).
+  invalid_arn_reason: {"4.1": ARN_INVALID_DIRECT, "3.2": null}
+
+referral:
+  clause_triggers: "8.3"
+  clause_stop_lock: "8.4"
+  clause_cash: "8.5"
+  large_txn_inr: 2500000
+  large_txn_window_days: 14
+  cash_limit_inr: 50000
+  addenda:
+    TMF-ADD-02:
+      clause: "A1"
+      redemption_min_inr: 500000
+      window_days: 30
+      purchase_types: [NEW, ADD]    # SIP instalments (and SIP registrations) excluded
+
+reply:
+  banned_terms_hold: [referral, refer, referred, suspicious, suspicion, compliance, FIU, report, reporting, AML, money laundering, investigation, flagged, red flag]
+  banned_terms_all: [processed, has been processed]
+  desk_signature: "TCC Desk, Validus"
+  desk_address: tcc.desk@validus-rta.example
+  hold_update_working_days: 3
