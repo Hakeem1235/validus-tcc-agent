@@ -182,22 +182,29 @@ def heuristic_extract(subject: str, body: str, sender: str, rx: dict, atts: list
             break
     x.is_cash = x.payment_mode == "CASH" or None
     # request type hint
-    redemption = _has(low, r"redeem|redemption|withdraw|nikal", r"sell (my )?units")
-    cob = _has(low, r"change of bank|change bank|bank mandate change|new bank account|update (my )?bank|cob\b")
+    redemption = _has(low, r"redeem|redemption|withdraw|nikal|sell (my )?units|encash")
+    cob = _has(low, r"change of bank|change (my |the )?bank|bank mandate|new bank account|register my new|"
+                    r"(update|change|replace) (my |the )?(bank|account details)|\bcob\b")
+    purchase = _has(low, r"additional|added|top(ped)?[\s-]*up|invest|transferred|purchase|sent rs|paid|remitted|"
+                         r"deposited|daale|dala|bheje|jama|nivesh|lump\s*sum|\bsip\b|instal")
+    non_txn = _has(low, r"nominat|nominee|address change|change of address|account statement|capital gains? statement|"
+                        r"duplicate (soa|statement)|update (my )?(email|mobile|phone)|tax certificate|query|complaint")
     if redemption:
         x.request_type_hint = "REDEMPTION"
-    elif cob:
+    elif cob and not purchase:
         x.request_type_hint = "CHANGE_OF_BANK"
-    elif _has(low, r"sip") and _has(low, r"register|registration|start(ed)?|new sip|first instal"):
+    elif _has(low, r"sip") and _has(low, r"register|registration|start(ed)?|new sip|first instal|payroll"):
         x.request_type_hint = "SIP_REGISTRATION"
     elif _has(low, r"sip instal|instalment"):
         x.request_type_hint = "SIP_INSTALMENT"
-    elif _has(low, r"open (a |the )?(new )?folio|new folio|new investment|fresh purchase|first investment"):
+    elif _has(low, r"open (a |the )?(new )?folio|new folio|new investment|fresh purchase|first investment|start investing"):
         x.request_type_hint = "NEW_FOLIO_PURCHASE" if not rx["folio_tokens"] or _has(low, r"open|new folio") else "ADDITIONAL_PURCHASE"
-    elif _has(low, r"additional|added|top[\s-]*up|invest|transferred|purchase|sent rs|paid|nivesh"):
+    elif purchase:
         x.request_type_hint = "ADDITIONAL_PURCHASE"
-    else:
+    elif non_txn:
         x.request_type_hint = "OTHER"
+    else:
+        x.request_type_hint = None  # unknown: let the matched transaction (if any) decide
     x.cob_mentioned = cob or any("COB_FORM" in a.doc_types for a in atts)
     x.contact_change_claimed = _has(low, r"(mobile|email|phone|contact).{0,40}(changed|updated|new)")
     x.execution_only_declaration = _has(low, r"execution[\s-]*only") or None
@@ -360,4 +367,4 @@ def classify(x: ExtractedRequest, txn: dict | None, folio_exists: bool) -> tuple
         return "ADDITIONAL_PURCHASE", "existing folio quoted for a purchase"
     if hint:
         return hint, "email content"
-    return "OTHER", "no recognisable request"
+    return "OTHER", "no recognisable request and no matching transaction"

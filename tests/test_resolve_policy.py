@@ -116,3 +116,16 @@ class TestPolicy:
     def test_search_filtered(self):
         hits = search("grandparent paying for minor", [("TCC-SOP", "4.1")])
         assert hits and all(h["version"] == "4.1" for h in hits) and hits[0]["clause_id"] in ("5.4", "5.3")
+
+
+def test_cob_request_not_attached_to_unrelated_pending_purchase():
+    """Regression (eval C24 'before'): a COB email must not inherit a pending ADD on the same folio."""
+    c = make_case("CHANGE_OF_BANK", request_type_hint="CHANGE_OF_BANK")
+    resolve(c, ["71167297/25"], [])
+    assert c.folio and c.txn is None
+
+
+def test_txn_needs_positive_evidence():
+    c = make_case("OTHER")  # no amount / UTR / account / type in the email
+    resolve(c, ["40131574/17"], [])
+    assert c.txn is None

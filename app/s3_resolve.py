@@ -152,30 +152,44 @@ def _match_txn(case: Case) -> None:
     req_date = parse_date(x.txn_date) or case.received_date
     acct = x.remitter_account_last4
 
-    def score(r: dict) -> int:
-        s = 0
+    def score(r: dict) -> tuple[int, bool]:
+        """(score, has positive evidence). Evidence = UTR, amount, paying account or a compatible type."""
+        s, positive = 0, False
         if x.utr and r.get("utr"):
-            s += 100 if r["utr"].upper() == x.utr.upper() else -100
+            hit = r["utr"].upper() == x.utr.upper()
+            s += 100 if hit else -100
+            positive |= hit
         if x.amount_inr and r.get("amount_inr"):
-            s += 10 if abs(float(r["amount_inr"]) - x.amount_inr) < 1 else -10
+            hit = abs(float(r["amount_inr"]) - x.amount_inr) < 1
+            s += 10 if hit else -10
+            positive |= hit
         if want_types:
-            s += 3 if r["txn_type"] in want_types else -3
+            hit = r["txn_type"] in want_types
+            s += 3 if hit else -3
+            positive |= hit
         d = parse_date(r.get("txn_date"))
         if d and abs((d - req_date).days) <= 1:
             s += 2
         if acct and r.get("remitter_account_masked"):
-            s += 5 if last4(r["remitter_account_masked"]) == acct else -5
-        return s
+            hit = last4(r["remitter_account_masked"]) == acct
+            s += 5 if hit else -5
+            positive |= hit
+        return s, positive
 
+    # A change-of-bank or out-of-scope request has no transaction behind it: attach one only on an exact UTR.
+    no_txn_request = x.request_type_hint in ("CHANGE_OF_BANK", "OTHER") or (case.request_type in ("CHANGE_OF_BANK", "OTHER"))
     primary = [r for r in pend if not r.get("duplicate_of")]
-    scored = sorted(((score(r), r) for r in primary), key=lambda z: (-z[0], z[1]["txn_id"]))
+    scored = sorted(((score(r), r) for r in primary), key=lambda z: (-z[0][0], z[1]["txn_id"]))
+    scored = [((s, pos), r) for (s, pos), r in scored if pos and s >= 0]
+    if no_txn_request:
+        scored = [((s, pos), r) for (s, pos), r in scored if x.utr and (r.get("utr") or "").upper() == x.utr.upper()]
     chosen = None
     if scored:
         top = scored[0]
-        tied = [r for s, r in scored if s == top[0]]
-        if top[0] >= 0 and (len(tied) == 1):
+        tied = [r for (s, _), r in scored if s == top[0][0]]
+        if len(tied) == 1:
             chosen = top[1]
-        elif top[0] >= 0 and len(tied) > 1:
+        else:
             case.warnings.append(f"Several pending transactions match equally ({', '.join(r['txn_id'] for r in tied)}); "
                                  f"none selected - checks use the email details.")
     if chosen is None and x.utr:

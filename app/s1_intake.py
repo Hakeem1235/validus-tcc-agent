@@ -49,6 +49,7 @@ DOC_RULES: list[tuple[str, str]] = [
     ("EMPLOYER_DECLARATION", r"payroll[\s_-]*deduction|employee[\s_-]*investment[\s_-]*programme|payroll[\s_-]*letter|employer[\s_-]*(declaration|letter|confirmation)"),
     ("EMPLOYEE_LIST", r"^\s*(list|schedule)\s+of\s+employees"),
     ("KYC_ACK_INVESTOR", r"kyc[\s_-]*acknowledg\w*[\s_-]*(of[\s_-]*)?(the[\s_-]*)?(investor|employee)"),
+    ("KYC_PAYER", r"kyc[\s_-]*(acknowledg\w*[\s_-]*)?(of[\s_-]*)?(the[\s_-]*)?payer|payer'?s?[\s_-]*kyc|kyc[\s_-]*of[\s_-]*payer"),
     ("KYC_ACK_THIRD_PARTY", r"kyc[\s_-]*acknowledg\w*[\s_-]*(of[\s_-]*)?(the[\s_-]*)?(employer|third[\s_-]*party|company|custodian|corporate)"),
     ("EXECUTION_ONLY_DECLARATION", r"execution[\s_-]*only"),
     ("CHANGE_OF_STATUS_FORM", r"change[\s_-]*of[\s_-]*(tax[\s_-]*)?status|minor[\s_-]*to[\s_-]*major"),
@@ -104,7 +105,7 @@ def classify(info: AttachmentInfo) -> None:
             if re.search(pat, text, re.I | re.M) and not re.search(r"enclosure\s*:\s*list of employees", text, re.I):
                 types.append(t)
             continue
-        if t.startswith("KYC_ACK"):
+        if t.startswith("KYC_ACK") or t == "KYC_PAYER":
             # a KYC acknowledgement is a document in its own right, not a checkbox label on another form
             if re.search(pat, head, re.I) or re.search(pat, name, re.I):
                 types.append(t)
@@ -136,7 +137,7 @@ def parse_fields(info: AttachmentInfo) -> None:
     t = info.text or ""
     if not t:
         return
-    acct_pats = [r"(?:debit|remitter|account|a/c|acct)\s*(?:no\.?|number|#)?\s*[:\-]?\s*([X\*\d][X\*\d\s]{5,}\d)",
+    acct_pats = [r"(?:debit|remitter|account|a/c|acct)\s*(?:no\.?|number|#)?\s*[:\-]?[ \t]*([X\*\d][X\*\d ]{5,}\d)",
                  r"A/c\s*No\.?\s*([\dX\*]{6,})"]
     if not info.account_last4:
         for p in acct_pats:

@@ -1,0 +1,1445 @@
+{
+ "meta": {
+  "timestamp": "20261013T065924Z",
+  "label": "fix2",
+  "target": "in-process",
+  "llm": "disabled (rules + templates)"
+ },
+ "summary": {
+  "cases": 44,
+  "outcome_accuracy": 0.9773,
+  "reason_exact": 0.9773,
+  "reason_partial": 0.9773,
+  "check_accuracy": 0.9846,
+  "approver_accuracy": 1.0,
+  "request_type_accuracy": 1.0,
+  "resolved_accuracy": 1.0,
+  "unsafe_errors": 0,
+  "over_cautious_errors": 1,
+  "http_non_200": 0,
+  "median_latency_ms": 8.0,
+  "median_cost_usd": 0.0,
+  "total_cost_usd": 0.0,
+  "llm_calls": 0
+ },
+ "cases": [
+  {
+   "id": "C01",
+   "description": "Reworded SIP registration (R01 type), folio without slash",
+   "tags": [
+    "reworded",
+    "sip"
+   ],
+   "http_status": 200,
+   "expected_outcome": "PROCEED",
+   "got_outcome": "PROCEED",
+   "outcome_ok": true,
+   "expected_reasons": [],
+   "got_reasons": [],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "SIP_REGISTRATION",
+   "resolved_ok": true,
+   "check_hits": 2,
+   "check_total": 2,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 182,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "C02",
+   "description": "Hindi-English mix, KRA not reachable",
+   "tags": [
+    "hinglish",
+    "kyc",
+    "utv"
+   ],
+   "http_status": 200,
+   "expected_outcome": "PEND",
+   "got_outcome": "PEND",
+   "outcome_ok": true,
+   "expected_reasons": [
+    "KYC_UNABLE_TO_VERIFY"
+   ],
+   "got_reasons": [
+    "KYC_UNABLE_TO_VERIFY"
+   ],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "ADDITIONAL_PURCHASE",
+   "resolved_ok": true,
+   "check_hits": 1,
+   "check_total": 1,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 8,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "C03",
+   "description": "Folio typo (last digit wrong) must be INVALID, not nearest match",
+   "tags": [
+    "identity",
+    "typo"
+   ],
+   "http_status": 200,
+   "expected_outcome": "INVALID_REQUEST",
+   "got_outcome": "INVALID_REQUEST",
+   "outcome_ok": true,
+   "expected_reasons": [
+    "FOLIO_NOT_FOUND"
+   ],
+   "got_reasons": [
+    "FOLIO_NOT_FOUND"
+   ],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": null,
+   "got_request_type": "ADDITIONAL_PURCHASE",
+   "resolved_ok": true,
+   "check_hits": 1,
+   "check_total": 1,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 7,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "C04",
+   "description": "PAN in email belongs to someone else (folio/PAN conflict)",
+   "tags": [
+    "identity",
+    "pan"
+   ],
+   "http_status": 200,
+   "expected_outcome": "INVALID_REQUEST",
+   "got_outcome": "INVALID_REQUEST",
+   "outcome_ok": true,
+   "expected_reasons": [
+    "FOLIO_PAN_MISMATCH"
+   ],
+   "got_reasons": [
+    "FOLIO_PAN_MISMATCH"
+   ],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": null,
+   "got_request_type": "ADDITIONAL_PURCHASE",
+   "resolved_ok": true,
+   "check_hits": 1,
+   "check_total": 1,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 8,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "C05",
+   "description": "KRA status text blank; code 203 = On Hold (derive from code)",
+   "tags": [
+    "kyc",
+    "data_issue"
+   ],
+   "http_status": 200,
+   "expected_outcome": "REJECT",
+   "got_outcome": "REJECT",
+   "outcome_ok": true,
+   "expected_reasons": [
+    "KYC_ON_HOLD"
+   ],
+   "got_reasons": [
+    "KYC_ON_HOLD"
+   ],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "ADDITIONAL_PURCHASE",
+   "resolved_ok": true,
+   "check_hits": 1,
+   "check_total": 1,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 10,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "C06",
+   "description": "KYC Registered investor opens folio with a new AMC (TMF)",
+   "tags": [
+    "kyc",
+    "new_folio"
+   ],
+   "http_status": 200,
+   "expected_outcome": "PEND",
+   "got_outcome": "PEND",
+   "outcome_ok": true,
+   "expected_reasons": [
+    "KYC_REGISTERED_NEW_AMC"
+   ],
+   "got_reasons": [
+    "KYC_REGISTERED_NEW_AMC"
+   ],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "NEW_FOLIO_PURCHASE",
+   "resolved_ok": true,
+   "check_hits": 1,
+   "check_total": 1,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 9,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "C07",
+   "description": "KYC Registered, additional purchase with an AMC already held (net banking)",
+   "tags": [
+    "kyc",
+    "proceed"
+   ],
+   "http_status": 200,
+   "expected_outcome": "PROCEED",
+   "got_outcome": "PROCEED",
+   "outcome_ok": true,
+   "expected_reasons": [],
+   "got_reasons": [],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "ADDITIONAL_PURCHASE",
+   "resolved_ok": true,
+   "check_hits": 2,
+   "check_total": 2,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 9,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "C08",
+   "description": "KYC On Hold, redemption -> refer to Operations Manager",
+   "tags": [
+    "kyc",
+    "redemption"
+   ],
+   "http_status": 200,
+   "expected_outcome": "HOLD_AND_REFER",
+   "got_outcome": "HOLD_AND_REFER",
+   "outcome_ok": true,
+   "expected_reasons": [
+    "KYC_ON_HOLD"
+   ],
+   "got_reasons": [
+    "KYC_ON_HOLD"
+   ],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "REDEMPTION",
+   "resolved_ok": true,
+   "check_hits": 1,
+   "check_total": 1,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 9,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "C09",
+   "description": "Mother (guardian) pays minor's folio from her own unregistered account, statement enclosed",
+   "tags": [
+    "tpp",
+    "minor",
+    "parent"
+   ],
+   "http_status": 200,
+   "expected_outcome": "PROCEED",
+   "got_outcome": "PROCEED",
+   "outcome_ok": true,
+   "expected_reasons": [],
+   "got_reasons": [],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "ADDITIONAL_PURCHASE",
+   "resolved_ok": true,
+   "check_hits": 2,
+   "check_total": 2,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 16,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "C10",
+   "description": "Mother pays minor's folio from unregistered account, no proof",
+   "tags": [
+    "tpp",
+    "minor",
+    "parent"
+   ],
+   "http_status": 200,
+   "expected_outcome": "PEND",
+   "got_outcome": "PEND",
+   "outcome_ok": true,
+   "expected_reasons": [
+    "BANK_PROOF_REQUIRED"
+   ],
+   "got_reasons": [
+    "BANK_PROOF_REQUIRED"
+   ],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "ADDITIONAL_PURCHASE",
+   "resolved_ok": true,
+   "check_hits": 1,
+   "check_total": 1,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 10,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "C11",
+   "description": "Employer payroll SIP with every 5.3 document enclosed",
+   "tags": [
+    "tpp",
+    "employer"
+   ],
+   "http_status": 200,
+   "expected_outcome": "PROCEED",
+   "got_outcome": "PROCEED",
+   "outcome_ok": true,
+   "expected_reasons": [],
+   "got_reasons": [],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "SIP_REGISTRATION",
+   "resolved_ok": true,
+   "check_hits": 1,
+   "check_total": 1,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 16,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "C12",
+   "description": "Employer payroll SIP missing only the employee list",
+   "tags": [
+    "tpp",
+    "employer"
+   ],
+   "http_status": 200,
+   "expected_outcome": "PEND",
+   "got_outcome": "PEND",
+   "outcome_ok": true,
+   "expected_reasons": [
+    "TPP_DOCS_MISSING"
+   ],
+   "got_reasons": [
+    "TPP_DOCS_MISSING"
+   ],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "SIP_REGISTRATION",
+   "resolved_ok": true,
+   "check_hits": 1,
+   "check_total": 1,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 11,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "C13",
+   "description": "Own unregistered account without proof (R06 without the statement)",
+   "tags": [
+    "tpp",
+    "proof"
+   ],
+   "http_status": 200,
+   "expected_outcome": "PEND",
+   "got_outcome": "PEND",
+   "outcome_ok": true,
+   "expected_reasons": [
+    "BANK_PROOF_REQUIRED"
+   ],
+   "got_reasons": [
+    "BANK_PROOF_REQUIRED"
+   ],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "ADDITIONAL_PURCHASE",
+   "resolved_ok": true,
+   "check_hits": 1,
+   "check_total": 1,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 7,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "C14",
+   "description": "First holder pays from a joint (unregistered) account she holds, statement enclosed",
+   "tags": [
+    "tpp",
+    "joint"
+   ],
+   "http_status": 200,
+   "expected_outcome": "PROCEED",
+   "got_outcome": "PEND",
+   "outcome_ok": false,
+   "expected_reasons": [],
+   "got_reasons": [
+    "BANK_PROOF_REQUIRED"
+   ],
+   "reasons_exact": false,
+   "reasons_partial": false,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "ADDITIONAL_PURCHASE",
+   "resolved_ok": true,
+   "check_hits": 0,
+   "check_total": 1,
+   "check_mismatches": {
+    "THIRD_PARTY_PAYMENT": {
+     "expected": "PASS",
+     "got": "UNABLE_TO_VERIFY"
+    }
+   },
+   "unsafe": [],
+   "over_cautious": true,
+   "latency_ms": 7,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "C15",
+   "description": "Minor attained majority; SIP instalment falls due after 18th birthday",
+   "tags": [
+    "minor"
+   ],
+   "http_status": 200,
+   "expected_outcome": "PEND",
+   "got_outcome": "PEND",
+   "outcome_ok": true,
+   "expected_reasons": [
+    "MINOR_ATTAINED_MAJORITY"
+   ],
+   "got_reasons": [
+    "MINOR_ATTAINED_MAJORITY"
+   ],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "SIP_INSTALMENT",
+   "resolved_ok": true,
+   "check_hits": 1,
+   "check_total": 1,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 8,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "C16",
+   "description": "Redemption submitted together with a COB (both proofs) -> 10-day cooling",
+   "tags": [
+    "cob",
+    "redemption"
+   ],
+   "http_status": 200,
+   "expected_outcome": "PEND",
+   "got_outcome": "PEND",
+   "outcome_ok": true,
+   "expected_reasons": [
+    "COB_COOLING"
+   ],
+   "got_reasons": [
+    "COB_COOLING"
+   ],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "REDEMPTION",
+   "resolved_ok": true,
+   "check_hits": 2,
+   "check_total": 2,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 10,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "C17",
+   "description": "Redemption 17 days after COB (outside cooling)",
+   "tags": [
+    "cob",
+    "redemption",
+    "proceed"
+   ],
+   "http_status": 200,
+   "expected_outcome": "PROCEED",
+   "got_outcome": "PROCEED",
+   "outcome_ok": true,
+   "expected_reasons": [],
+   "got_reasons": [],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "REDEMPTION",
+   "resolved_ok": true,
+   "check_hits": 2,
+   "check_total": 2,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 7,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "C18",
+   "description": "Active ARN not empanelled with TMF",
+   "tags": [
+    "distributor",
+    "tmf"
+   ],
+   "http_status": 200,
+   "expected_outcome": "PROCEED_MODIFIED",
+   "got_outcome": "PROCEED_MODIFIED",
+   "outcome_ok": true,
+   "expected_reasons": [
+    "ARN_INVALID_DIRECT"
+   ],
+   "got_reasons": [
+    "ARN_INVALID_DIRECT"
+   ],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "ADDITIONAL_PURCHASE",
+   "resolved_ok": true,
+   "check_hits": 1,
+   "check_total": 1,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 8,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "C19",
+   "description": "Regular plan, valid ARN, blank EUIN -> proceed with EUIN_MISSING follow-up",
+   "tags": [
+    "distributor",
+    "euin"
+   ],
+   "http_status": 200,
+   "expected_outcome": "PROCEED",
+   "got_outcome": "PROCEED",
+   "outcome_ok": true,
+   "expected_reasons": [
+    "EUIN_MISSING"
+   ],
+   "got_reasons": [
+    "EUIN_MISSING"
+   ],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "ADDITIONAL_PURCHASE",
+   "resolved_ok": true,
+   "check_hits": 1,
+   "check_total": 1,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 7,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "C20",
+   "description": "Redemption on a STOP_LOCK folio",
+   "tags": [
+    "referral",
+    "stop_lock"
+   ],
+   "http_status": 200,
+   "expected_outcome": "HOLD_AND_REFER",
+   "got_outcome": "HOLD_AND_REFER",
+   "outcome_ok": true,
+   "expected_reasons": [
+    "STOP_LOCK"
+   ],
+   "got_reasons": [
+    "STOP_LOCK"
+   ],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "REDEMPTION",
+   "resolved_ok": true,
+   "check_hits": 1,
+   "check_total": 1,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 7,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "C21",
+   "description": "Cash purchase takes FY total above Rs 50,000 (aggregated with May cash)",
+   "tags": [
+    "referral",
+    "cash"
+   ],
+   "http_status": 200,
+   "expected_outcome": "REJECT",
+   "got_outcome": "REJECT",
+   "outcome_ok": true,
+   "expected_reasons": [
+    "CASH_LIMIT_BREACH"
+   ],
+   "got_reasons": [
+    "CASH_LIMIT_BREACH"
+   ],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "ADDITIONAL_PURCHASE",
+   "resolved_ok": true,
+   "check_hits": 2,
+   "check_total": 2,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 8,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "C22",
+   "description": "TMF redemption >= 5L within 30 days of an additional purchase (TMF-ADD-02 A1)",
+   "tags": [
+    "referral",
+    "tmf",
+    "addendum"
+   ],
+   "http_status": 200,
+   "expected_outcome": "HOLD_AND_REFER",
+   "got_outcome": "HOLD_AND_REFER",
+   "outcome_ok": true,
+   "expected_reasons": [
+    "REFERRAL_TRIGGER"
+   ],
+   "got_reasons": [
+    "REFERRAL_TRIGGER"
+   ],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "REDEMPTION",
+   "resolved_ok": true,
+   "check_hits": 1,
+   "check_total": 1,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 8,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "C23",
+   "description": "Same pattern on NMF (no addendum) -> no referral",
+   "tags": [
+    "referral",
+    "nmf",
+    "control"
+   ],
+   "http_status": 200,
+   "expected_outcome": "PROCEED",
+   "got_outcome": "PROCEED",
+   "outcome_ok": true,
+   "expected_reasons": [],
+   "got_reasons": [],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "REDEMPTION",
+   "resolved_ok": true,
+   "check_hits": 1,
+   "check_total": 1,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 8,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "C24",
+   "description": "TMF change of bank without existing-account proof (A2)",
+   "tags": [
+    "cob",
+    "tmf",
+    "addendum"
+   ],
+   "http_status": 200,
+   "expected_outcome": "PEND",
+   "got_outcome": "PEND",
+   "outcome_ok": true,
+   "expected_reasons": [
+    "BANK_PROOF_REQUIRED"
+   ],
+   "got_reasons": [
+    "BANK_PROOF_REQUIRED"
+   ],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "CHANGE_OF_BANK",
+   "resolved_ok": true,
+   "check_hits": 1,
+   "check_total": 1,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 9,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "C25",
+   "description": "TMF COB relying on in-person verification (not accepted for TMF)",
+   "tags": [
+    "cob",
+    "tmf",
+    "addendum"
+   ],
+   "http_status": 200,
+   "expected_outcome": "PEND",
+   "got_outcome": "PEND",
+   "outcome_ok": true,
+   "expected_reasons": [
+    "BANK_PROOF_REQUIRED"
+   ],
+   "got_reasons": [
+    "BANK_PROOF_REQUIRED"
+   ],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "CHANGE_OF_BANK",
+   "resolved_ok": true,
+   "check_hits": 1,
+   "check_total": 1,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 8,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "C26",
+   "description": "Grandparent -> minor dated May 2026: SOP v3.2 related-person exception with documents",
+   "tags": [
+    "tpp",
+    "minor",
+    "v3.2"
+   ],
+   "http_status": 200,
+   "expected_outcome": "PROCEED",
+   "got_outcome": "PROCEED",
+   "outcome_ok": true,
+   "expected_reasons": [],
+   "got_reasons": [],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "ADDITIONAL_PURCHASE",
+   "resolved_ok": true,
+   "check_hits": 1,
+   "check_total": 1,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 8,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "C27",
+   "description": "Expired ARN in July 2026 (v4.0 not available -> v3.2: stays Regular, no code)",
+   "tags": [
+    "distributor",
+    "v3.2"
+   ],
+   "http_status": 200,
+   "expected_outcome": "PROCEED",
+   "got_outcome": "PROCEED",
+   "outcome_ok": true,
+   "expected_reasons": [],
+   "got_reasons": [],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "ADDITIONAL_PURCHASE",
+   "resolved_ok": true,
+   "check_hits": 1,
+   "check_total": 1,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 9,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "C28",
+   "description": "Suspended ARN (NMF) under v4.1",
+   "tags": [
+    "distributor"
+   ],
+   "http_status": 200,
+   "expected_outcome": "PROCEED_MODIFIED",
+   "got_outcome": "PROCEED_MODIFIED",
+   "outcome_ok": true,
+   "expected_reasons": [
+    "ARN_INVALID_DIRECT"
+   ],
+   "got_reasons": [
+    "ARN_INVALID_DIRECT"
+   ],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "ADDITIONAL_PURCHASE",
+   "resolved_ok": true,
+   "check_hits": 1,
+   "check_total": 1,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 7,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "C29",
+   "description": "Large Rs 30 lakh purchase with no large redemption nearby -> no false referral",
+   "tags": [
+    "referral",
+    "control"
+   ],
+   "http_status": 200,
+   "expected_outcome": "PROCEED",
+   "got_outcome": "PROCEED",
+   "outcome_ok": true,
+   "expected_reasons": [],
+   "got_reasons": [],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "ADDITIONAL_PURCHASE",
+   "resolved_ok": true,
+   "check_hits": 1,
+   "check_total": 1,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 7,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "C30",
+   "description": "Out-of-scope request (nomination update) -> not auto-proceeded",
+   "tags": [
+    "other"
+   ],
+   "http_status": 200,
+   "expected_outcome": "PEND",
+   "got_outcome": "PEND",
+   "outcome_ok": true,
+   "expected_reasons": [],
+   "got_reasons": [],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "OTHER",
+   "resolved_ok": true,
+   "check_hits": 1,
+   "check_total": 1,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 7,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "C31",
+   "description": "NMF change of bank with both proofs -> proceed to validation",
+   "tags": [
+    "cob"
+   ],
+   "http_status": 200,
+   "expected_outcome": "PROCEED",
+   "got_outcome": "PROCEED",
+   "outcome_ok": true,
+   "expected_reasons": [],
+   "got_reasons": [],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "CHANGE_OF_BANK",
+   "resolved_ok": true,
+   "check_hits": 1,
+   "check_total": 1,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 8,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "C32",
+   "description": "Redemption from a TMF scheme quoting an NMF folio -> identifiers conflict",
+   "tags": [
+    "identity"
+   ],
+   "http_status": 200,
+   "expected_outcome": "INVALID_REQUEST",
+   "got_outcome": "INVALID_REQUEST",
+   "outcome_ok": true,
+   "expected_reasons": [
+    "FOLIO_PAN_MISMATCH"
+   ],
+   "got_reasons": [
+    "FOLIO_PAN_MISMATCH"
+   ],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": null,
+   "got_request_type": "REDEMPTION",
+   "resolved_ok": true,
+   "check_hits": 1,
+   "check_total": 1,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 6,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "C33",
+   "description": "Grandparent -> minor, no attachment, reworded (v4.1)",
+   "tags": [
+    "tpp",
+    "minor",
+    "reworded"
+   ],
+   "http_status": 200,
+   "expected_outcome": "REJECT",
+   "got_outcome": "REJECT",
+   "outcome_ok": true,
+   "expected_reasons": [
+    "TPP_NO_EXCEPTION"
+   ],
+   "got_reasons": [
+    "TPP_NO_EXCEPTION"
+   ],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "ADDITIONAL_PURCHASE",
+   "resolved_ok": true,
+   "check_hits": 1,
+   "check_total": 1,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 9,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "R00",
+   "description": "Worked example from CURRENT_WORKFLOW (Kedia Wealth / Ravi Kumar Bhat)",
+   "tags": [
+    "workflow",
+    "proceed"
+   ],
+   "http_status": 200,
+   "expected_outcome": "PROCEED",
+   "got_outcome": "PROCEED",
+   "outcome_ok": true,
+   "expected_reasons": [],
+   "got_reasons": [],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "ADDITIONAL_PURCHASE",
+   "resolved_ok": true,
+   "check_hits": 8,
+   "check_total": 8,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 9,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "R01",
+   "description": "SIP registration, distributor, valid ARN/EUIN, NACH registered",
+   "tags": [
+    "inbox",
+    "sip",
+    "distributor"
+   ],
+   "http_status": 200,
+   "expected_outcome": "PROCEED",
+   "got_outcome": "PROCEED",
+   "outcome_ok": true,
+   "expected_reasons": [],
+   "got_reasons": [],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "SIP_REGISTRATION",
+   "resolved_ok": true,
+   "check_hits": 3,
+   "check_total": 3,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 9,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "R02",
+   "description": "Grandparent pays into minor folio (v4.1 5.4)",
+   "tags": [
+    "inbox",
+    "tpp",
+    "minor"
+   ],
+   "http_status": 200,
+   "expected_outcome": "REJECT",
+   "got_outcome": "REJECT",
+   "outcome_ok": true,
+   "expected_reasons": [
+    "TPP_NO_EXCEPTION"
+   ],
+   "got_reasons": [
+    "TPP_NO_EXCEPTION"
+   ],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "ADDITIONAL_PURCHASE",
+   "resolved_ok": true,
+   "check_hits": 3,
+   "check_total": 3,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 124,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "R03",
+   "description": "Employer payroll SIP, 3 documents missing (scan + letter)",
+   "tags": [
+    "inbox",
+    "tpp",
+    "employer",
+    "scan"
+   ],
+   "http_status": 200,
+   "expected_outcome": "PEND",
+   "got_outcome": "PEND",
+   "outcome_ok": true,
+   "expected_reasons": [
+    "TPP_DOCS_MISSING"
+   ],
+   "got_reasons": [
+    "TPP_DOCS_MISSING"
+   ],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "SIP_REGISTRATION",
+   "resolved_ok": true,
+   "check_hits": 2,
+   "check_total": 2,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 36,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "R04",
+   "description": "KYC On Hold, additional purchase",
+   "tags": [
+    "inbox",
+    "kyc"
+   ],
+   "http_status": 200,
+   "expected_outcome": "REJECT",
+   "got_outcome": "REJECT",
+   "outcome_ok": true,
+   "expected_reasons": [
+    "KYC_ON_HOLD"
+   ],
+   "got_reasons": [
+    "KYC_ON_HOLD"
+   ],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "ADDITIONAL_PURCHASE",
+   "resolved_ok": true,
+   "check_hits": 2,
+   "check_total": 2,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 7,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "R05",
+   "description": "KYC Registered, new folio with a new AMC",
+   "tags": [
+    "inbox",
+    "kyc",
+    "new_folio"
+   ],
+   "http_status": 200,
+   "expected_outcome": "PEND",
+   "got_outcome": "PEND",
+   "outcome_ok": true,
+   "expected_reasons": [
+    "KYC_REGISTERED_NEW_AMC"
+   ],
+   "got_reasons": [
+    "KYC_REGISTERED_NEW_AMC"
+   ],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "NEW_FOLIO_PURCHASE",
+   "resolved_ok": true,
+   "check_hits": 1,
+   "check_total": 1,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 8,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "R06",
+   "description": "Own unregistered account, bank statement enclosed; duplicate pending row",
+   "tags": [
+    "inbox",
+    "tpp",
+    "data_issue"
+   ],
+   "http_status": 200,
+   "expected_outcome": "PROCEED",
+   "got_outcome": "PROCEED",
+   "outcome_ok": true,
+   "expected_reasons": [],
+   "got_reasons": [],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "ADDITIONAL_PURCHASE",
+   "resolved_ok": true,
+   "check_hits": 1,
+   "check_total": 1,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 25,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "R07",
+   "description": "Joint folio, second holder pays from own account",
+   "tags": [
+    "inbox",
+    "tpp",
+    "joint"
+   ],
+   "http_status": 200,
+   "expected_outcome": "REJECT",
+   "got_outcome": "REJECT",
+   "outcome_ok": true,
+   "expected_reasons": [
+    "TPP_NO_EXCEPTION"
+   ],
+   "got_reasons": [
+    "TPP_NO_EXCEPTION"
+   ],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "ADDITIONAL_PURCHASE",
+   "resolved_ok": true,
+   "check_hits": 1,
+   "check_total": 1,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 9,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "R08",
+   "description": "Expired ARN, TMF, 'fresh purchase' wording on existing folio",
+   "tags": [
+    "inbox",
+    "distributor",
+    "tmf"
+   ],
+   "http_status": 200,
+   "expected_outcome": "PROCEED_MODIFIED",
+   "got_outcome": "PROCEED_MODIFIED",
+   "outcome_ok": true,
+   "expected_reasons": [
+    "ARN_INVALID_DIRECT"
+   ],
+   "got_reasons": [
+    "ARN_INVALID_DIRECT"
+   ],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "ADDITIONAL_PURCHASE",
+   "resolved_ok": true,
+   "check_hits": 1,
+   "check_total": 1,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 9,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "R09",
+   "description": "KRA web service not reachable (399)",
+   "tags": [
+    "inbox",
+    "kyc",
+    "utv"
+   ],
+   "http_status": 200,
+   "expected_outcome": "PEND",
+   "got_outcome": "PEND",
+   "outcome_ok": true,
+   "expected_reasons": [
+    "KYC_UNABLE_TO_VERIFY"
+   ],
+   "got_reasons": [
+    "KYC_UNABLE_TO_VERIFY"
+   ],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "ADDITIONAL_PURCHASE",
+   "resolved_ok": true,
+   "check_hits": 1,
+   "check_total": 1,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 7,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  },
+  {
+   "id": "R10",
+   "description": "Redemption + COB 4 days earlier + contact change; pending-validation payout account",
+   "tags": [
+    "inbox",
+    "cob",
+    "redemption"
+   ],
+   "http_status": 200,
+   "expected_outcome": "HOLD_AND_REFER",
+   "got_outcome": "HOLD_AND_REFER",
+   "outcome_ok": true,
+   "expected_reasons": [
+    "BANK_PROOF_REQUIRED",
+    "COB_COOLING",
+    "HIGH_RISK_CONTACT_COB"
+   ],
+   "got_reasons": [
+    "BANK_PROOF_REQUIRED",
+    "COB_COOLING",
+    "HIGH_RISK_CONTACT_COB"
+   ],
+   "reasons_exact": true,
+   "reasons_partial": true,
+   "approver_ok": true,
+   "request_type_ok": true,
+   "got_request_type": "REDEMPTION",
+   "resolved_ok": true,
+   "check_hits": 3,
+   "check_total": 3,
+   "check_mismatches": {},
+   "unsafe": [],
+   "over_cautious": false,
+   "latency_ms": 27,
+   "cost_usd": 0.0,
+   "model_calls": 0,
+   "error": null
+  }
+ ]
+}
