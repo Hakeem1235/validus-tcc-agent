@@ -1,0 +1,44 @@
+{
+ "id": "C26",
+ "description": "Grandparent -> minor dated May 2026: SOP v3.2 related-person exception with documents",
+ "tags": [
+  "tpp",
+  "minor",
+  "v3.2"
+ ],
+ "input": {
+  "request_id": "C26",
+  "received_at": "2026-05-15T11:00:00+05:30",
+  "channel": "email",
+  "from": "Vasant Kulkarni <vasantgk1951@rediffmail.example>",
+  "to": "TCC Desk <tcc.desk@validus-rta.example>",
+  "cc": "",
+  "subject": "Investment for grandson Ishaan",
+  "body": "Dear Sir, I have transferred Rs. 30,000 by NEFT from my Satpura Bank savings account ending 9641 for my grandson Ishaan Kulkarni (minor), folio 40173612/78, Narmada Flexi Cap Fund Direct. Third party payment declaration and my KYC are attached. Vasant G. Kulkarni",
+  "attachments": [
+   {
+    "file_name": "TPP_declaration_Vasant.txt",
+    "content_type": "text/plain",
+    "content_base64": "VEhJUkQgUEFSVFkgUEFZTUVOVCBERUNMQVJBVElPTiBGT1JNCkJlbmVmaWNpYWwgaW52ZXN0b3I6IElzaGFhbiBLdWxrYXJuaSAobWlub3IpClRoaXJkIHBhcnR5OiBWYXNhbnQgR292aW5kIEt1bGthcm5pClJlbGF0aW9uc2hpcDogR3JhbmRmYXRoZXIK"
+   },
+   {
+    "file_name": "KYC_of_payer_Vasant.txt",
+    "content_type": "text/plain",
+    "content_base64": "S1lDIEFDS05PV0xFREdFTUVOVCBPRiBQQVlFUgpWYXNhbnQgR292aW5kIEt1bGthcm5pIC0gS1lDIFZhbGlkYXRlZAo="
+   }
+  ]
+ },
+ "expected": {
+  "request_type": "ADDITIONAL_PURCHASE",
+  "outcome": "PROCEED",
+  "reason_codes": [],
+  "approver_role": null,
+  "human_approval_required": false,
+  "checks": {
+   "THIRD_PARTY_PAYMENT": "PASS"
+  },
+  "resolved": {
+   "folio_no": "40173612/78"
+  }
+ }
+}

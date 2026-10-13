@@ -23,11 +23,15 @@ def outcome_for(check: CheckResult, reason: str) -> str:
     return r["reason_outcome"].get(reason, "PEND")
 
 
-def decide(checks: list[CheckResult]) -> Decision:
+def decide(checks: list[CheckResult], request_type: str | None = None) -> Decision:
     r = rules()
     order = r["outcome_precedence"]
     candidates: list[tuple[str, str, str]] = []  # (outcome, reason, check)
     rationale = []
+    if request_type == "OTHER":
+        # Not a purchase/SIP/redemption/COB: outside the TCC checks; never auto-PROCEED, route to a person.
+        candidates.append(("PEND", "", "SCOPE"))
+        rationale.append("request type OTHER (outside SOP 2.1 scope) -> PEND for manual handling")
     for c in checks:
         if c.result in ("PASS", "NOT_APPLICABLE") and not c.reason_codes:
             continue

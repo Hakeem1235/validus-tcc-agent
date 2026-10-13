@@ -1,0 +1,28 @@
+{
+ "id": "R03",
+ "description": "Employer payroll SIP, 3 documents missing (scan + letter)",
+ "tags": [
+  "inbox",
+  "tpp",
+  "employer",
+  "scan"
+ ],
+ "input_ref": "inbox:R03",
+ "expected": {
+  "request_type": "SIP_REGISTRATION",
+  "outcome": "PEND",
+  "reason_codes": [
+   "TPP_DOCS_MISSING"
+  ],
+  "approver_role": null,
+  "human_approval_required": false,
+  "checks": {
+   "THIRD_PARTY_PAYMENT": "FAIL",
+   "DISTRIBUTOR_CODE": "NOT_APPLICABLE"
+  },
+  "resolved": {
+   "folio_no": "71138631/21",
+   "txn_id": "T261000011"
+  }
+ }
+}

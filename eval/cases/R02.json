@@ -1,0 +1,28 @@
+{
+ "id": "R02",
+ "description": "Grandparent pays into minor folio (v4.1 5.4)",
+ "tags": [
+  "inbox",
+  "tpp",
+  "minor"
+ ],
+ "input_ref": "inbox:R02",
+ "expected": {
+  "request_type": "ADDITIONAL_PURCHASE",
+  "outcome": "REJECT",
+  "reason_codes": [
+   "TPP_NO_EXCEPTION"
+  ],
+  "approver_role": "CHECKER",
+  "human_approval_required": true,
+  "checks": {
+   "THIRD_PARTY_PAYMENT": "FAIL",
+   "KYC_STATUS": "PASS",
+   "MINOR_RULES": "PASS"
+  },
+  "resolved": {
+   "folio_no": "40173612/78",
+   "txn_id": "T261000009"
+  }
+ }
+}

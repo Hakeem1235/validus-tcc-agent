@@ -1,0 +1,35 @@
+{
+ "id": "C18",
+ "description": "Active ARN not empanelled with TMF",
+ "tags": [
+  "distributor",
+  "tmf"
+ ],
+ "input": {
+  "request_id": "C18",
+  "received_at": "2026-10-08T11:00:00+05:30",
+  "channel": "email",
+  "from": "Coastal Investment Services <ops@coastal.example>",
+  "to": "TCC Desk <tcc.desk@validus-rta.example>",
+  "cc": "",
+  "subject": "Additional purchase Rahul Joshi",
+  "body": "Dear Team, Rs 1,50,000 additional purchase in Tungabhadra Midcap Fund - Regular - Growth for our client Rahul Joshi, folio 71102387-42, NEFT from his registered Aravali account ending 6578. ARN-118460 / EUIN E821115.",
+  "attachments": []
+ },
+ "expected": {
+  "request_type": "ADDITIONAL_PURCHASE",
+  "outcome": "PROCEED_MODIFIED",
+  "reason_codes": [
+   "ARN_INVALID_DIRECT"
+  ],
+  "approver_role": "CHECKER",
+  "human_approval_required": true,
+  "checks": {
+   "DISTRIBUTOR_CODE": "FAIL"
+  },
+  "resolved": {
+   "folio_no": "71102387/42",
+   "txn_id": "T261000026"
+  }
+ }
+}

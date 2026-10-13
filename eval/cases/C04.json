@@ -1,0 +1,31 @@
+{
+ "id": "C04",
+ "description": "PAN in email belongs to someone else (folio/PAN conflict)",
+ "tags": [
+  "identity",
+  "pan"
+ ],
+ "input": {
+  "request_id": "C04",
+  "received_at": "2026-10-08T11:00:00+05:30",
+  "channel": "email",
+  "from": "Kiran Reddy <kiran.r****@gmail.com>",
+  "to": "TCC Desk <tcc.desk@validus-rta.example>",
+  "cc": "",
+  "subject": "Additional purchase folio 40131574/17",
+  "body": "Please add Rs 75,000 (IMPS, Satpura a/c ending 4455) to folio 40131574/17. My PAN is YBZPB**44W.",
+  "attachments": []
+ },
+ "expected": {
+  "request_type": "OTHER_OK",
+  "outcome": "INVALID_REQUEST",
+  "reason_codes": [
+   "FOLIO_PAN_MISMATCH"
+  ],
+  "approver_role": null,
+  "human_approval_required": false,
+  "checks": {
+   "FOLIO_IDENTITY": "FAIL"
+  }
+ }
+}

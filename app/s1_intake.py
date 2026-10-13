@@ -46,7 +46,7 @@ DOC_RULES: list[tuple[str, str]] = [
     ("PASSBOOK", r"pass[\s_-]*book"),
     ("BANK_LETTER", r"bank[\s_-]*letter|to[\s_-]*whomsoever"),
     ("BANKER_CERTIFICATE", r"banker'?s[\s_-]*certificate"),
-    ("EMPLOYER_DECLARATION", r"payroll[\s_-]*deduction|employee[\s_-]*investment[\s_-]*programme|employer[\s_-]*declaration|payroll[\s_-]*letter"),
+    ("EMPLOYER_DECLARATION", r"payroll[\s_-]*deduction|employee[\s_-]*investment[\s_-]*programme|payroll[\s_-]*letter|employer[\s_-]*(declaration|letter|confirmation)"),
     ("EMPLOYEE_LIST", r"^\s*(list|schedule)\s+of\s+employees"),
     ("KYC_ACK_INVESTOR", r"kyc[\s_-]*acknowledg\w*[\s_-]*(of[\s_-]*)?(the[\s_-]*)?(investor|employee)"),
     ("KYC_ACK_THIRD_PARTY", r"kyc[\s_-]*acknowledg\w*[\s_-]*(of[\s_-]*)?(the[\s_-]*)?(employer|third[\s_-]*party|company|custodian|corporate)"),
@@ -113,7 +113,14 @@ def classify(info: AttachmentInfo) -> None:
             if re.search(pat, head, re.I) or re.search(pat, name, re.I):
                 types.append(t)
             continue
-        if re.search(pat, head, re.I) or re.search(pat, name, re.I) or (t in ("BANK_STATEMENT", "TRANSFER_INSTRUCTION", "COB_FORM", "EMPLOYER_DECLARATION") and re.search(pat, text[:400], re.I)):
+        if t == "EMPLOYER_DECLARATION":
+            # a letter on the employer's letterhead confirming payroll deduction; a checkbox label on a TPP form is not one
+            if "TPP_DECLARATION" in types:
+                continue
+            if re.search(pat, name, re.I) or re.search(r"payroll[\s-]*deduction|employee investment programme", text[:600], re.I):
+                types.append(t)
+            continue
+        if re.search(pat, head, re.I) or re.search(pat, name, re.I) or (t in ("BANK_STATEMENT", "TRANSFER_INSTRUCTION", "COB_FORM") and re.search(pat, text[:400], re.I)):
             types.append(t)
     if "CANCELLED_CHEQUE" in types and "COB_FORM" in types and not re.search(r"cheque", name, re.I) and "COB_FORM" in types:
         # a COB form listing "cancelled cheque" as an enclosure is not the cheque itself

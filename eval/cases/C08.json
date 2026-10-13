@@ -1,0 +1,34 @@
+{
+ "id": "C08",
+ "description": "KYC On Hold, redemption -> refer to Operations Manager",
+ "tags": [
+  "kyc",
+  "redemption"
+ ],
+ "input": {
+  "request_id": "C08",
+  "received_at": "2026-10-08T11:00:00+05:30",
+  "channel": "email",
+  "from": "Farhan Siddiqui <farhan.s****@gmail.com>",
+  "to": "TCC Desk <tcc.desk@validus-rta.example>",
+  "cc": "",
+  "subject": "Redeem short duration",
+  "body": "Hi, please redeem Rs 50,000 from Narmada Short Duration Fund, folio 40120238/73, to my registered account. Farhan",
+  "attachments": []
+ },
+ "expected": {
+  "request_type": "REDEMPTION",
+  "outcome": "HOLD_AND_REFER",
+  "reason_codes": [
+   "KYC_ON_HOLD"
+  ],
+  "approver_role": "OPS_MANAGER",
+  "human_approval_required": true,
+  "checks": {
+   "KYC_STATUS": "FAIL"
+  },
+  "resolved": {
+   "folio_no": "40120238/73"
+  }
+ }
+}

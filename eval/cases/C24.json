@@ -1,0 +1,46 @@
+{
+ "id": "C24",
+ "description": "TMF change of bank without existing-account proof (A2)",
+ "tags": [
+  "cob",
+  "tmf",
+  "addendum"
+ ],
+ "input": {
+  "request_id": "C24",
+  "received_at": "2026-10-08T11:00:00+05:30",
+  "channel": "email",
+  "from": "Aditi Menon <ad****@outlook.com>",
+  "to": "TCC Desk <tcc.desk@validus-rta.example>",
+  "cc": "",
+  "subject": "Change of bank - folio 71167297/25",
+  "body": "Please change my bank mandate on folio 71167297/25 to my new Coromandel Bank account ending 3390. Change of bank form and cancelled cheque attached.",
+  "attachments": [
+   {
+    "file_name": "COB_form.txt",
+    "content_type": "text/plain",
+    "content_base64": "UmVxdWVzdCBmb3IgQ2hhbmdlIG9mIEJhbmsgTWFuZGF0ZQpGb2xpbyBuby4gOiA3MTE2NzI5Ny8yNQpOZXcgYmFuazogQ29yb21hbmRlbCBCYW5rCkFjY291bnQgbnVtYmVyIDogWFhYWFhYWFgzMzkwCk9sZCBiYW5rIHByb29mOiBub3QgYXZhaWxhYmxlCkRhdGU6IDA4LzEwLzIwMjYK"
+   },
+   {
+    "file_name": "Cancelled_cheque.txt",
+    "content_type": "text/plain",
+    "content_base64": "Q09ST01BTkRFTCBCQU5LCkNBTkNFTExFRApBL2MgTm8uIDU1MDEyMDMzOTAKQURJVEkgTUVOT04K"
+   }
+  ]
+ },
+ "expected": {
+  "request_type": "CHANGE_OF_BANK",
+  "outcome": "PEND",
+  "reason_codes": [
+   "BANK_PROOF_REQUIRED"
+  ],
+  "approver_role": null,
+  "human_approval_required": false,
+  "checks": {
+   "BANK_MANDATE": "FAIL"
+  },
+  "resolved": {
+   "folio_no": "71167297/25"
+  }
+ }
+}

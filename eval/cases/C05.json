@@ -1,0 +1,34 @@
+{
+ "id": "C05",
+ "description": "KRA status text blank; code 203 = On Hold (derive from code)",
+ "tags": [
+  "kyc",
+  "data_issue"
+ ],
+ "input": {
+  "request_id": "C05",
+  "received_at": "2026-10-08T11:00:00+05:30",
+  "channel": "email",
+  "from": "Tarun Reddy <ta****@rediffmail.com>",
+  "to": "TCC Desk <tcc.desk@validus-rta.example>",
+  "cc": "",
+  "subject": "Lump sum in short duration fund",
+  "body": "Hello, I have invested Rs 20,000 in Narmada Short Duration Fund - Direct - Growth, folio 40128306/90, by NEFT from my registered Konkan Mercantile Bank account ending 8313. Please confirm. Tarun Reddy",
+  "attachments": []
+ },
+ "expected": {
+  "request_type": "ADDITIONAL_PURCHASE",
+  "outcome": "REJECT",
+  "reason_codes": [
+   "KYC_ON_HOLD"
+  ],
+  "approver_role": "CHECKER",
+  "human_approval_required": true,
+  "checks": {
+   "KYC_STATUS": "FAIL"
+  },
+  "resolved": {
+   "folio_no": "40128306/90"
+  }
+ }
+}

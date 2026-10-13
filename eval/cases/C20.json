@@ -1,0 +1,35 @@
+{
+ "id": "C20",
+ "description": "Redemption on a STOP_LOCK folio",
+ "tags": [
+  "referral",
+  "stop_lock"
+ ],
+ "input": {
+  "request_id": "C20",
+  "received_at": "2026-10-08T11:00:00+05:30",
+  "channel": "email",
+  "from": "Harini Subramanian <ha****@yahoo.co.in>",
+  "to": "TCC Desk <tcc.desk@validus-rta.example>",
+  "cc": "",
+  "subject": "Redemption",
+  "body": "Please redeem Rs 1,20,000 from my Narmada Large Cap Fund holding, folio 40161537/29. Regards, Harini",
+  "attachments": []
+ },
+ "expected": {
+  "request_type": "REDEMPTION",
+  "outcome": "HOLD_AND_REFER",
+  "reason_codes": [
+   "STOP_LOCK"
+  ],
+  "approver_role": "OPS_MANAGER",
+  "human_approval_required": true,
+  "checks": {
+   "REFERRAL": "FAIL"
+  },
+  "resolved": {
+   "folio_no": "40161537/29",
+   "txn_id": "T261000046"
+  }
+ }
+}

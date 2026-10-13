@@ -133,7 +133,9 @@ def _process(raw: dict, trace: TraceCollector) -> dict:
         checks = [done[c] for c in CHECK_ORDER]
     # S6
     stage = "S6"
-    decision = decide(checks)
+    decision = decide(checks, case.request_type)
+    if case.request_type == "OTHER":
+        case.warnings.append("Request is not a purchase, SIP, redemption or change of bank; routed for manual handling.")
     # S7
     stage = "S7"
     reply, reply_meta = draft(case, decision, checks)

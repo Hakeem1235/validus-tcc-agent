@@ -1,0 +1,47 @@
+{
+ "id": "C31",
+ "description": "NMF change of bank with both proofs -> proceed to validation",
+ "tags": [
+  "cob"
+ ],
+ "input": {
+  "request_id": "C31",
+  "received_at": "2026-10-08T11:00:00+05:30",
+  "channel": "email",
+  "from": "Gaurav Bhatia <ga****@yahoo.co.in>",
+  "to": "TCC Desk <tcc.desk@validus-rta.example>",
+  "cc": "",
+  "subject": "Change of bank folio 40136263/98",
+  "body": "Please change my bank mandate on folio 40136263/98 to my new Aravali Bank account ending 4410. Form, cancelled cheque and a statement of my existing account ending 7946 are attached.",
+  "attachments": [
+   {
+    "file_name": "Change_of_bank_form.txt",
+    "content_type": "text/plain",
+    "content_base64": "UmVxdWVzdCBmb3IgQ2hhbmdlIG9mIEJhbmsgTWFuZGF0ZQpGb2xpbyBuby4gOiA0MDEzNjI2My85OApOZXcgYmFuazogQXJhdmFsaSBCYW5rCkFjY291bnQgbnVtYmVyIDogWFhYWFhYWFg0NDEwCkRhdGU6IDA4LzEwLzIwMjYK"
+   },
+   {
+    "file_name": "Cancelled_cheque_new.txt",
+    "content_type": "text/plain",
+    "content_base64": "QVJBVkFMSSBCQU5LCkNBTkNFTExFRApBL2MgTm8uIDc3MTIwMDQ0MTAKR0FVUkFWIEJIQVRJQQo="
+   },
+   {
+    "file_name": "Old_account_statement.txt",
+    "content_type": "text/plain",
+    "content_base64": "U1RBVEVNRU5UIE9GIEFDQ09VTlQKQWNjb3VudCBob2xkZXIgOiBHQVVSQVYgQkhBVElBCkFjY291bnQgbnVtYmVyIDogWFhYWFhYWFg3OTQ2Cg=="
+   }
+  ]
+ },
+ "expected": {
+  "request_type": "CHANGE_OF_BANK",
+  "outcome": "PROCEED",
+  "reason_codes": [],
+  "approver_role": null,
+  "human_approval_required": false,
+  "checks": {
+   "BANK_MANDATE": "PASS"
+  },
+  "resolved": {
+   "folio_no": "40136263/98"
+  }
+ }
+}

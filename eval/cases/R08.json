@@ -1,0 +1,26 @@
+{
+ "id": "R08",
+ "description": "Expired ARN, TMF, 'fresh purchase' wording on existing folio",
+ "tags": [
+  "inbox",
+  "distributor",
+  "tmf"
+ ],
+ "input_ref": "inbox:R08",
+ "expected": {
+  "request_type": "ADDITIONAL_PURCHASE",
+  "outcome": "PROCEED_MODIFIED",
+  "reason_codes": [
+   "ARN_INVALID_DIRECT"
+  ],
+  "approver_role": "CHECKER",
+  "human_approval_required": true,
+  "checks": {
+   "DISTRIBUTOR_CODE": "FAIL"
+  },
+  "resolved": {
+   "folio_no": "71167297/25",
+   "txn_id": "T261000025"
+  }
+ }
+}

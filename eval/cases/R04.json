@@ -1,0 +1,26 @@
+{
+ "id": "R04",
+ "description": "KYC On Hold, additional purchase",
+ "tags": [
+  "inbox",
+  "kyc"
+ ],
+ "input_ref": "inbox:R04",
+ "expected": {
+  "request_type": "ADDITIONAL_PURCHASE",
+  "outcome": "REJECT",
+  "reason_codes": [
+   "KYC_ON_HOLD"
+  ],
+  "approver_role": "CHECKER",
+  "human_approval_required": true,
+  "checks": {
+   "KYC_STATUS": "FAIL",
+   "THIRD_PARTY_PAYMENT": "PASS"
+  },
+  "resolved": {
+   "folio_no": "40120238/73",
+   "txn_id": "T261000013"
+  }
+ }
+}

@@ -1,0 +1,26 @@
+{
+ "id": "R01",
+ "description": "SIP registration, distributor, valid ARN/EUIN, NACH registered",
+ "tags": [
+  "inbox",
+  "sip",
+  "distributor"
+ ],
+ "input_ref": "inbox:R01",
+ "expected": {
+  "request_type": "SIP_REGISTRATION",
+  "outcome": "PROCEED",
+  "reason_codes": [],
+  "approver_role": null,
+  "human_approval_required": false,
+  "checks": {
+   "KYC_STATUS": "PASS",
+   "THIRD_PARTY_PAYMENT": "PASS",
+   "DISTRIBUTOR_CODE": "PASS"
+  },
+  "resolved": {
+   "folio_no": "40118823/23",
+   "txn_id": "T261000007"
+  }
+ }
+}

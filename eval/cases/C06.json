@@ -1,0 +1,34 @@
+{
+ "id": "C06",
+ "description": "KYC Registered investor opens folio with a new AMC (TMF)",
+ "tags": [
+  "kyc",
+  "new_folio"
+ ],
+ "input": {
+  "request_id": "C06",
+  "received_at": "2026-10-08T11:00:00+05:30",
+  "channel": "email",
+  "from": "Gaurav Bhatia <ga****@yahoo.co.in>",
+  "to": "TCC Desk <tcc.desk@validus-rta.example>",
+  "cc": "",
+  "subject": "New folio in Tungabhadra Midcap",
+  "body": "Dear team, I want to start investing in Tungabhadra Midcap Fund - Direct - Growth, Rs 1,00,000 lump sum. I already have Narmada folio 40136263/98. Please open a new folio with Tungabhadra and tell me how to pay. Gaurav",
+  "attachments": []
+ },
+ "expected": {
+  "request_type": "NEW_FOLIO_PURCHASE",
+  "outcome": "PEND",
+  "reason_codes": [
+   "KYC_REGISTERED_NEW_AMC"
+  ],
+  "approver_role": null,
+  "human_approval_required": false,
+  "checks": {
+   "KYC_STATUS": "FAIL"
+  },
+  "resolved": {
+   "amc_code": "TMF"
+  }
+ }
+}

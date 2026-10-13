@@ -1,0 +1,41 @@
+{
+ "id": "C25",
+ "description": "TMF COB relying on in-person verification (not accepted for TMF)",
+ "tags": [
+  "cob",
+  "tmf",
+  "addendum"
+ ],
+ "input": {
+  "request_id": "C25",
+  "received_at": "2026-10-08T11:00:00+05:30",
+  "channel": "email",
+  "from": "Aditi Menon <ad****@outlook.com>",
+  "to": "TCC Desk <tcc.desk@validus-rta.example>",
+  "cc": "",
+  "subject": "Bank change folio 71167297/25",
+  "body": "I visited your Chennai branch for in-person verification of my existing account. Please register my new Coromandel Bank account ending 3390 on folio 71167297/25; cancelled cheque attached.",
+  "attachments": [
+   {
+    "file_name": "Cancelled_cheque.txt",
+    "content_type": "text/plain",
+    "content_base64": "Q09ST01BTkRFTCBCQU5LCkNBTkNFTExFRApBL2MgTm8uIDU1MDEyMDMzOTAKQURJVEkgTUVOT04K"
+   }
+  ]
+ },
+ "expected": {
+  "request_type": "CHANGE_OF_BANK",
+  "outcome": "PEND",
+  "reason_codes": [
+   "BANK_PROOF_REQUIRED"
+  ],
+  "approver_role": null,
+  "human_approval_required": false,
+  "checks": {
+   "BANK_MANDATE": "FAIL"
+  },
+  "resolved": {
+   "folio_no": "71167297/25"
+  }
+ }
+}

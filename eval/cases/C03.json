@@ -1,0 +1,31 @@
+{
+ "id": "C03",
+ "description": "Folio typo (last digit wrong) must be INVALID, not nearest match",
+ "tags": [
+  "identity",
+  "typo"
+ ],
+ "input": {
+  "request_id": "C03",
+  "received_at": "2026-10-08T11:00:00+05:30",
+  "channel": "email",
+  "from": "Kiran Reddy <kiran.r****@gmail.com>",
+  "to": "TCC Desk <tcc.desk@validus-rta.example>",
+  "cc": "",
+  "subject": "Additional purchase",
+  "body": "Additional purchase of Rs. 75,000 by IMPS today in Narmada Flexi Cap Fund, folio 40131574/18, from my registered Satpura Bank account ending 4455.",
+  "attachments": []
+ },
+ "expected": {
+  "request_type": "OTHER_OK",
+  "outcome": "INVALID_REQUEST",
+  "reason_codes": [
+   "FOLIO_NOT_FOUND"
+  ],
+  "approver_role": null,
+  "human_approval_required": false,
+  "checks": {
+   "FOLIO_IDENTITY": "FAIL"
+  }
+ }
+}

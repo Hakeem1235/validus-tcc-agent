@@ -1,0 +1,34 @@
+{
+ "id": "C07",
+ "description": "KYC Registered, additional purchase with an AMC already held (net banking)",
+ "tags": [
+  "kyc",
+  "proceed"
+ ],
+ "input": {
+  "request_id": "C07",
+  "received_at": "2026-10-08T11:00:00+05:30",
+  "channel": "email",
+  "from": "Gaurav Bhatia <ga****@yahoo.co.in>",
+  "to": "TCC Desk <tcc.desk@validus-rta.example>",
+  "cc": "",
+  "subject": "Top up Narmada Large Cap",
+  "body": "Topped up Rs 25,000 into Narmada Large Cap Fund Direct Growth today via net banking from my Sindhu Commercial Bank account ending 7946. Folio 40136263/98.",
+  "attachments": []
+ },
+ "expected": {
+  "request_type": "ADDITIONAL_PURCHASE",
+  "outcome": "PROCEED",
+  "reason_codes": [],
+  "approver_role": null,
+  "human_approval_required": false,
+  "checks": {
+   "KYC_STATUS": "PASS",
+   "THIRD_PARTY_PAYMENT": "PASS"
+  },
+  "resolved": {
+   "folio_no": "40136263/98",
+   "txn_id": "T261000020"
+  }
+ }
+}

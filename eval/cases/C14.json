@@ -1,0 +1,38 @@
+{
+ "id": "C14",
+ "description": "First holder pays from a joint (unregistered) account she holds, statement enclosed",
+ "tags": [
+  "tpp",
+  "joint"
+ ],
+ "input": {
+  "request_id": "C14",
+  "received_at": "2026-10-08T11:00:00+05:30",
+  "channel": "email",
+  "from": "Priya Raghavan <pr****@rediffmail.com>",
+  "to": "TCC Desk <tcc.desk@validus-rta.example>",
+  "cc": "",
+  "subject": "Investment in folio 40112665/21",
+  "body": "Dear team, I have invested Rs 60,000 in Narmada Large Cap Fund Direct Growth (folio 40112665/21) by NEFT from our joint savings account ending 7781 with my husband. Statement attached. Priya",
+  "attachments": [
+   {
+    "file_name": "Joint_statement.txt",
+    "content_type": "text/plain",
+    "content_base64": "U1RBVEVNRU5UIE9GIEFDQ09VTlQKQWNjb3VudCBob2xkZXIgOiBQUklZQSBSQUdIQVZBTgpKb2ludCBob2xkZXIocyk6IFJBR0hBVkFOIFNSSU5JVkFTQU4KQWNjb3VudCBudW1iZXIgOiBYWFhYWFhYWDc3ODEKMDgvMTAvMjAyNiBORUZULUNSTUxOMjYxMDA4OTk5OTEyMy1OQVJNQURBIE1VVFVBTCBGVU5EIDYwLDAwMC4wMAo="
+   }
+  ]
+ },
+ "expected": {
+  "request_type": "ADDITIONAL_PURCHASE",
+  "outcome": "PROCEED",
+  "reason_codes": [],
+  "approver_role": null,
+  "human_approval_required": false,
+  "checks": {
+   "THIRD_PARTY_PAYMENT": "PASS"
+  },
+  "resolved": {
+   "folio_no": "40112665/21"
+  }
+ }
+}

@@ -1,0 +1,26 @@
+{
+ "id": "R09",
+ "description": "KRA web service not reachable (399)",
+ "tags": [
+  "inbox",
+  "kyc",
+  "utv"
+ ],
+ "input_ref": "inbox:R09",
+ "expected": {
+  "request_type": "ADDITIONAL_PURCHASE",
+  "outcome": "PEND",
+  "reason_codes": [
+   "KYC_UNABLE_TO_VERIFY"
+  ],
+  "approver_role": null,
+  "human_approval_required": false,
+  "checks": {
+   "KYC_STATUS": "UNABLE_TO_VERIFY"
+  },
+  "resolved": {
+   "folio_no": "40131574/17",
+   "txn_id": "T261000028"
+  }
+ }
+}

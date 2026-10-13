@@ -1,0 +1,33 @@
+{
+ "id": "C23",
+ "description": "Same pattern on NMF (no addendum) -> no referral",
+ "tags": [
+  "referral",
+  "nmf",
+  "control"
+ ],
+ "input": {
+  "request_id": "C23",
+  "received_at": "2026-10-08T11:00:00+05:30",
+  "channel": "email",
+  "from": "Anil Saxena <an****@yahoo.co.in>",
+  "to": "TCC Desk <tcc.desk@validus-rta.example>",
+  "cc": "",
+  "subject": "Redemption folio 40138985/28",
+  "body": "Please redeem Rs 5,50,000 from Narmada Short Duration Fund, folio 40138985/28, to my registered Kaveri account.",
+  "attachments": []
+ },
+ "expected": {
+  "request_type": "REDEMPTION",
+  "outcome": "PROCEED",
+  "reason_codes": [],
+  "approver_role": null,
+  "human_approval_required": false,
+  "checks": {
+   "REFERRAL": "PASS"
+  },
+  "resolved": {
+   "folio_no": "40138985/28"
+  }
+ }
+}

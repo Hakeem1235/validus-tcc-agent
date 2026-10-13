@@ -1,0 +1,31 @@
+{
+ "id": "C30",
+ "description": "Out-of-scope request (nomination update) -> not auto-proceeded",
+ "tags": [
+  "other"
+ ],
+ "input": {
+  "request_id": "C30",
+  "received_at": "2026-10-08T11:00:00+05:30",
+  "channel": "email",
+  "from": "Kiran Reddy <kiran.r****@gmail.com>",
+  "to": "TCC Desk <tcc.desk@validus-rta.example>",
+  "cc": "",
+  "subject": "Nomination update",
+  "body": "Hello, I want to update the nominee on my folio 40131574/17 to my wife. Please send me the form. Kiran",
+  "attachments": []
+ },
+ "expected": {
+  "request_type": "OTHER",
+  "outcome": "PEND",
+  "reason_codes": [],
+  "approver_role": null,
+  "human_approval_required": false,
+  "checks": {
+   "FOLIO_IDENTITY": "PASS"
+  },
+  "resolved": {
+   "folio_no": "40131574/17"
+  }
+ }
+}

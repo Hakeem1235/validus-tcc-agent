@@ -1,0 +1,34 @@
+{
+ "id": "C01",
+ "description": "Reworded SIP registration (R01 type), folio without slash",
+ "tags": [
+  "reworded",
+  "sip"
+ ],
+ "input": {
+  "request_id": "C01",
+  "received_at": "2026-10-06T10:30:00+05:30",
+  "channel": "email",
+  "from": "Ramesh Kedia <operations@kediawealth.example>",
+  "to": "TCC Desk <tcc.desk@validus-rta.example>",
+  "cc": "",
+  "subject": "SIP for Mr Nair",
+  "body": "Hi team - kindly register Arjun Nair's monthly SIP, Rs 10000 on the 10th, Narmada Flexi Cap regular growth, folio 4011882323. First instalment went through NACH from his Aravali a/c ending 4908 on 6 Oct. ARN-145023, EUIN E289730. Thanks",
+  "attachments": []
+ },
+ "expected": {
+  "request_type": "SIP_REGISTRATION",
+  "outcome": "PROCEED",
+  "reason_codes": [],
+  "approver_role": null,
+  "human_approval_required": false,
+  "checks": {
+   "DISTRIBUTOR_CODE": "PASS",
+   "THIRD_PARTY_PAYMENT": "PASS"
+  },
+  "resolved": {
+   "folio_no": "40118823/23",
+   "txn_id": "T261000007"
+  }
+ }
+}

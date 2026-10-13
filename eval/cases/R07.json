@@ -1,0 +1,26 @@
+{
+ "id": "R07",
+ "description": "Joint folio, second holder pays from own account",
+ "tags": [
+  "inbox",
+  "tpp",
+  "joint"
+ ],
+ "input_ref": "inbox:R07",
+ "expected": {
+  "request_type": "ADDITIONAL_PURCHASE",
+  "outcome": "REJECT",
+  "reason_codes": [
+   "TPP_NO_EXCEPTION"
+  ],
+  "approver_role": "CHECKER",
+  "human_approval_required": true,
+  "checks": {
+   "THIRD_PARTY_PAYMENT": "FAIL"
+  },
+  "resolved": {
+   "folio_no": "40112665/21",
+   "txn_id": "T261000022"
+  }
+ }
+}

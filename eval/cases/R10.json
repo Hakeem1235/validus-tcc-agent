@@ -1,0 +1,30 @@
+{
+ "id": "R10",
+ "description": "Redemption + COB 4 days earlier + contact change; pending-validation payout account",
+ "tags": [
+  "inbox",
+  "cob",
+  "redemption"
+ ],
+ "input_ref": "inbox:R10",
+ "expected": {
+  "request_type": "REDEMPTION",
+  "outcome": "HOLD_AND_REFER",
+  "reason_codes": [
+   "HIGH_RISK_CONTACT_COB",
+   "COB_COOLING",
+   "BANK_PROOF_REQUIRED"
+  ],
+  "approver_role": "OPS_MANAGER",
+  "human_approval_required": true,
+  "checks": {
+   "COB_COOLING": "FAIL",
+   "BANK_MANDATE": "FAIL",
+   "KYC_STATUS": "PASS"
+  },
+  "resolved": {
+   "folio_no": "40115267/30",
+   "txn_id": "T261000031"
+  }
+ }
+}

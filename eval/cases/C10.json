@@ -1,0 +1,36 @@
+{
+ "id": "C10",
+ "description": "Mother pays minor's folio from unregistered account, no proof",
+ "tags": [
+  "tpp",
+  "minor",
+  "parent"
+ ],
+ "input": {
+  "request_id": "C10",
+  "received_at": "2026-10-07T18:00:00+05:30",
+  "channel": "email",
+  "from": "Meera Deshpande <me****@yahoo.co.in>",
+  "to": "TCC Desk <tcc.desk@validus-rta.example>",
+  "cc": "",
+  "subject": "Ananya folio top-up",
+  "body": "Hello, I am Ananya's mother. I transferred Rs 40,000 by NEFT from my account ending 9986 to her folio 40129212/58 in Narmada Flexi Cap Direct. Please process. Meera",
+  "attachments": []
+ },
+ "expected": {
+  "request_type": "ADDITIONAL_PURCHASE",
+  "outcome": "PEND",
+  "reason_codes": [
+   "BANK_PROOF_REQUIRED"
+  ],
+  "approver_role": null,
+  "human_approval_required": false,
+  "checks": {
+   "THIRD_PARTY_PAYMENT": "FAIL"
+  },
+  "resolved": {
+   "folio_no": "40129212/58",
+   "txn_id": "T261000010"
+  }
+ }
+}

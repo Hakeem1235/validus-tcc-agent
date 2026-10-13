@@ -1,0 +1,36 @@
+{
+ "id": "C33",
+ "description": "Grandparent -> minor, no attachment, reworded (v4.1)",
+ "tags": [
+  "tpp",
+  "minor",
+  "reworded"
+ ],
+ "input": {
+  "request_id": "C33",
+  "received_at": "2026-10-06T18:40:00+05:30",
+  "channel": "email",
+  "from": "Vasant Kulkarni <vasantgk1951@rediffmail.example>",
+  "to": "TCC Desk <tcc.desk@validus-rta.example>",
+  "cc": "",
+  "subject": "For Ishaan",
+  "body": "Sent forty thousand rupees (Rs 40,000) by NEFT from my Satpura account ending 9641 for my grandson's folio 4017361278 in Narmada Flexi Cap. UTR KNKMH2610065981253. - Vasant (grandfather)",
+  "attachments": []
+ },
+ "expected": {
+  "request_type": "ADDITIONAL_PURCHASE",
+  "outcome": "REJECT",
+  "reason_codes": [
+   "TPP_NO_EXCEPTION"
+  ],
+  "approver_role": "CHECKER",
+  "human_approval_required": true,
+  "checks": {
+   "THIRD_PARTY_PAYMENT": "FAIL"
+  },
+  "resolved": {
+   "folio_no": "40173612/78",
+   "txn_id": "T261000009"
+  }
+ }
+}

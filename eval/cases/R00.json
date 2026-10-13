@@ -1,0 +1,40 @@
+{
+ "id": "R00",
+ "description": "Worked example from CURRENT_WORKFLOW (Kedia Wealth / Ravi Kumar Bhat)",
+ "tags": [
+  "workflow",
+  "proceed"
+ ],
+ "input": {
+  "request_id": "R00",
+  "received_at": "2026-09-22T11:05:00+05:30",
+  "channel": "email",
+  "from": "Ramesh Kedia <operations@kediawealth.example>",
+  "to": "TCC Desk <tcc.desk@validus-rta.example>",
+  "cc": "",
+  "subject": "Additional purchase - Ravi Kumar Bhat - Narmada Large Cap",
+  "body": "Dear Team, Our client Mr. Ravi Kumar Bhat has invested Rs. 75,000/- in Narmada Large Cap Fund - Regular - Growth, folio no. 4016645093, by NEFT today from his Konkan Mercantile Bank account ending 5475 (UTR VNDYN2609229076583). ARN-145023 / EUIN E289730. Kindly process.  Regards, Ramesh Kedia, Kedia Wealth Partners",
+  "attachments": []
+ },
+ "expected": {
+  "request_type": "ADDITIONAL_PURCHASE",
+  "outcome": "PROCEED",
+  "reason_codes": [],
+  "approver_role": null,
+  "human_approval_required": false,
+  "checks": {
+   "KYC_STATUS": "PASS",
+   "THIRD_PARTY_PAYMENT": "PASS",
+   "DISTRIBUTOR_CODE": "PASS",
+   "BANK_MANDATE": "NOT_APPLICABLE",
+   "COB_COOLING": "NOT_APPLICABLE",
+   "MINOR_RULES": "NOT_APPLICABLE",
+   "REFERRAL": "PASS",
+   "FOLIO_IDENTITY": "PASS"
+  },
+  "resolved": {
+   "folio_no": "40166450/93",
+   "txn_id": "T260900518"
+  }
+ }
+}

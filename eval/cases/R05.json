@@ -1,0 +1,25 @@
+{
+ "id": "R05",
+ "description": "KYC Registered, new folio with a new AMC",
+ "tags": [
+  "inbox",
+  "kyc",
+  "new_folio"
+ ],
+ "input_ref": "inbox:R05",
+ "expected": {
+  "request_type": "NEW_FOLIO_PURCHASE",
+  "outcome": "PEND",
+  "reason_codes": [
+   "KYC_REGISTERED_NEW_AMC"
+  ],
+  "approver_role": null,
+  "human_approval_required": false,
+  "checks": {
+   "KYC_STATUS": "FAIL"
+  },
+  "resolved": {
+   "amc_code": "TMF"
+  }
+ }
+}

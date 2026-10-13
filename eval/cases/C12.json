@@ -1,0 +1,56 @@
+{
+ "id": "C12",
+ "description": "Employer payroll SIP missing only the employee list",
+ "tags": [
+  "tpp",
+  "employer"
+ ],
+ "input": {
+  "request_id": "C12",
+  "received_at": "2026-10-07T15:02:00+05:30",
+  "channel": "email",
+  "from": "HR Payroll - Deccan Polymers <payroll@deccanpolymers.example>",
+  "to": "TCC Desk <tcc.desk@validus-rta.example>",
+  "cc": "",
+  "subject": "Payroll SIP - Sandeep Yadav",
+  "body": "Dear Team, payroll SIP of Rs 5,000 for our employee Sandeep Yadav, folio 71138631/21, Tungabhadra Large & Mid Cap Direct Growth, paid by NEFT from our company account. Declaration, letter and KYC acknowledgements attached; the list of employees will follow next week.",
+  "attachments": [
+   {
+    "file_name": "TPP_declaration.txt",
+    "content_type": "text/plain",
+    "content_base64": "VEhJUkQgUEFSVFkgUEFZTUVOVCBERUNMQVJBVElPTiBGT1JNCkJlbmVmaWNpYWwgaW52ZXN0b3I6IFNhbmRlZXAgWWFkYXYKUmVsYXRpb25zaGlwOiBFbXBsb3llcgo="
+   },
+   {
+    "file_name": "Employer_letter.txt",
+    "content_type": "text/plain",
+    "content_base64": "REVDQ0FOIFBPTFlNRVJTIFBWVCBMVEQKQ29uZmlybWF0aW9uIG9mIHBheXJvbGwgZGVkdWN0aW9uIGZvciBlbXBsb3llZSBTYW5kZWVwIFlhZGF2Lgo="
+   },
+   {
+    "file_name": "KYC_ack_investor.txt",
+    "content_type": "text/plain",
+    "content_base64": "S1lDIEFDS05PV0xFREdFTUVOVCBPRiBJTlZFU1RPUgpTYW5kZWVwIFlhZGF2IEJBUlBZKio2OVoK"
+   },
+   {
+    "file_name": "KYC_ack_employer.txt",
+    "content_type": "text/plain",
+    "content_base64": "S1lDIEFDS05PV0xFREdFTUVOVCBPRiBFTVBMT1lFUgpEZWNjYW4gUG9seW1lcnMgUHZ0IEx0ZCBSTFZDTCoqODhZCg=="
+   }
+  ]
+ },
+ "expected": {
+  "request_type": "SIP_REGISTRATION",
+  "outcome": "PEND",
+  "reason_codes": [
+   "TPP_DOCS_MISSING"
+  ],
+  "approver_role": null,
+  "human_approval_required": false,
+  "checks": {
+   "THIRD_PARTY_PAYMENT": "FAIL"
+  },
+  "resolved": {
+   "folio_no": "71138631/21",
+   "txn_id": "T261000011"
+  }
+ }
+}

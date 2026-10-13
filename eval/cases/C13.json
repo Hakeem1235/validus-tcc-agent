@@ -1,0 +1,35 @@
+{
+ "id": "C13",
+ "description": "Own unregistered account without proof (R06 without the statement)",
+ "tags": [
+  "tpp",
+  "proof"
+ ],
+ "input": {
+  "request_id": "C13",
+  "received_at": "2026-10-07T16:20:00+05:30",
+  "channel": "email",
+  "from": "Neha Agarwal <neha.a****@gmail.com>",
+  "to": "TCC Desk <tcc.desk@validus-rta.example>",
+  "cc": "",
+  "subject": "NEFT to folio 40159954/10",
+  "body": "I transferred Rs. 2,00,000 by NEFT today to Narmada Flexi Cap Fund for my folio 40159954/10 from my own Vindhya Bank savings account ending 5879 (UTR VNDYN2610073906590). Thanks, Neha",
+  "attachments": []
+ },
+ "expected": {
+  "request_type": "ADDITIONAL_PURCHASE",
+  "outcome": "PEND",
+  "reason_codes": [
+   "BANK_PROOF_REQUIRED"
+  ],
+  "approver_role": null,
+  "human_approval_required": false,
+  "checks": {
+   "THIRD_PARTY_PAYMENT": "FAIL"
+  },
+  "resolved": {
+   "folio_no": "40159954/10",
+   "txn_id": "T261000021"
+  }
+ }
+}

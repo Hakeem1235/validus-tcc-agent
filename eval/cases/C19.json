@@ -1,0 +1,34 @@
+{
+ "id": "C19",
+ "description": "Regular plan, valid ARN, blank EUIN -> proceed with EUIN_MISSING follow-up",
+ "tags": [
+  "distributor",
+  "euin"
+ ],
+ "input": {
+  "request_id": "C19",
+  "received_at": "2026-10-08T11:00:00+05:30",
+  "channel": "email",
+  "from": "Ramesh Kedia <operations@kediawealth.example>",
+  "to": "TCC Desk <tcc.desk@validus-rta.example>",
+  "cc": "",
+  "subject": "Additional purchase Ravi Kumar Bhat",
+  "body": "Our client Mr Ravi Kumar Bhat has invested Rs 50,000 in Narmada Large Cap Fund - Regular - Growth, folio 40166450/93, by NEFT today from his registered Konkan Mercantile Bank account ending 5475. ARN-145023.",
+  "attachments": []
+ },
+ "expected": {
+  "request_type": "ADDITIONAL_PURCHASE",
+  "outcome": "PROCEED",
+  "reason_codes": [
+   "EUIN_MISSING"
+  ],
+  "approver_role": null,
+  "human_approval_required": false,
+  "checks": {
+   "DISTRIBUTOR_CODE": "FAIL"
+  },
+  "resolved": {
+   "folio_no": "40166450/93"
+  }
+ }
+}

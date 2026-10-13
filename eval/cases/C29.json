@@ -1,0 +1,32 @@
+{
+ "id": "C29",
+ "description": "Large Rs 30 lakh purchase with no large redemption nearby -> no false referral",
+ "tags": [
+  "referral",
+  "control"
+ ],
+ "input": {
+  "request_id": "C29",
+  "received_at": "2026-10-08T11:00:00+05:30",
+  "channel": "email",
+  "from": "Ravi Kumar Bhat <ra****@outlook.com>",
+  "to": "TCC Desk <tcc.desk@validus-rta.example>",
+  "cc": "",
+  "subject": "Large investment",
+  "body": "I have invested Rs 30 lakh by RTGS today in Narmada Large Cap Fund Direct Growth, folio 40166450/93, from my registered Konkan Mercantile Bank account ending 5475.",
+  "attachments": []
+ },
+ "expected": {
+  "request_type": "ADDITIONAL_PURCHASE",
+  "outcome": "PROCEED",
+  "reason_codes": [],
+  "approver_role": null,
+  "human_approval_required": false,
+  "checks": {
+   "REFERRAL": "PASS"
+  },
+  "resolved": {
+   "folio_no": "40166450/93"
+  }
+ }
+}

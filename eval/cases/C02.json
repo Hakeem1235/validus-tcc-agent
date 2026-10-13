@@ -1,0 +1,36 @@
+{
+ "id": "C02",
+ "description": "Hindi-English mix, KRA not reachable",
+ "tags": [
+  "hinglish",
+  "kyc",
+  "utv"
+ ],
+ "input": {
+  "request_id": "C02",
+  "received_at": "2026-10-08T14:30:00+05:30",
+  "channel": "email",
+  "from": "Kiran Reddy <kiran.r****@gmail.com>",
+  "to": "TCC Desk <tcc.desk@validus-rta.example>",
+  "cc": "",
+  "subject": "paisa add kiya",
+  "body": "Namaste, maine aaj Narmada Flexi Cap mein Rs 75,000 IMPS se daale hain, folio 40131574/17, mere registered Satpura Bank account ending 4455 se. Kripya confirm karein. Dhanyavaad, Kiran",
+  "attachments": []
+ },
+ "expected": {
+  "request_type": "ADDITIONAL_PURCHASE",
+  "outcome": "PEND",
+  "reason_codes": [
+   "KYC_UNABLE_TO_VERIFY"
+  ],
+  "approver_role": null,
+  "human_approval_required": false,
+  "checks": {
+   "KYC_STATUS": "UNABLE_TO_VERIFY"
+  },
+  "resolved": {
+   "folio_no": "40131574/17",
+   "txn_id": "T261000028"
+  }
+ }
+}

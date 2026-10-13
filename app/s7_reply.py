@@ -127,8 +127,13 @@ def template(case: Case, d: Decision, checks: list[CheckResult]) -> DraftReply:
         lines.append(f"{whose} {what} has been received and is under processing. We expect to send you an update by "
                      f"{upd.strftime('%d %B %Y')}.")
     elif o == "PEND":
-        lines.append(f"{whose} {what} has been received and is on hold pending the following:")
-        items = _pend_items(case, d, by_code)
+        if case.request_type == "OTHER":
+            lines.append(f"Thank you for your email{' regarding folio ' + folio if folio else ''}. It has been passed to "
+                         "the team that handles this kind of request, who will reply to you shortly.")
+            items = []
+        else:
+            lines.append(f"{whose} {what} has been received and is on hold pending the following:")
+            items = _pend_items(case, d, by_code)
         for i, it in enumerate(items, 1):
             lines.append(f"  {i}. {it}")
         if any("send" in it.lower() for it in items):

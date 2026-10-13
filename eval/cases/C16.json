@@ -1,0 +1,51 @@
+{
+ "id": "C16",
+ "description": "Redemption submitted together with a COB (both proofs) -> 10-day cooling",
+ "tags": [
+  "cob",
+  "redemption"
+ ],
+ "input": {
+  "request_id": "C16",
+  "received_at": "2026-10-08T11:00:00+05:30",
+  "channel": "email",
+  "from": "Gaurav Bhatia <ga****@yahoo.co.in>",
+  "to": "TCC Desk <tcc.desk@validus-rta.example>",
+  "cc": "",
+  "subject": "Redemption and bank change - folio 40136263/98",
+  "body": "Please redeem Rs 20,000 from Narmada Large Cap Fund, folio 40136263/98. I am also changing my bank: change of bank form, cancelled cheque of the new account and a statement of my existing Sindhu Commercial Bank account ending 7946 are attached.",
+  "attachments": [
+   {
+    "file_name": "Change_of_bank_form.txt",
+    "content_type": "text/plain",
+    "content_base64": "UmVxdWVzdCBmb3IgQ2hhbmdlIG9mIEJhbmsgTWFuZGF0ZQpGb2xpbyBuby4gOiA0MDEzNjI2My85OApFeGlzdGluZyBiYW5rOiBTaW5kaHUgQ29tbWVyY2lhbCBCYW5rIFhYWFhYWFhYNzk0NgpOZXcgYmFuazogQXJhdmFsaSBCYW5rCkFjY291bnQgbnVtYmVyIDogWFhYWFhYWFg0NDEwCkRhdGU6IDA4LzEwLzIwMjYK"
+   },
+   {
+    "file_name": "Cancelled_cheque_new.txt",
+    "content_type": "text/plain",
+    "content_base64": "QVJBVkFMSSBCQU5LCkNBTkNFTExFRApBL2MgTm8uIDc3MTIwMDQ0MTAKR0FVUkFWIEJIQVRJQQo="
+   },
+   {
+    "file_name": "Old_account_statement.txt",
+    "content_type": "text/plain",
+    "content_base64": "U1RBVEVNRU5UIE9GIEFDQ09VTlQKQWNjb3VudCBob2xkZXIgOiBHQVVSQVYgQkhBVElBCkFjY291bnQgbnVtYmVyIDogWFhYWFhYWFg3OTQ2Cg=="
+   }
+  ]
+ },
+ "expected": {
+  "request_type": "REDEMPTION",
+  "outcome": "PEND",
+  "reason_codes": [
+   "COB_COOLING"
+  ],
+  "approver_role": null,
+  "human_approval_required": false,
+  "checks": {
+   "COB_COOLING": "FAIL",
+   "BANK_MANDATE": "PASS"
+  },
+  "resolved": {
+   "folio_no": "40136263/98"
+  }
+ }
+}

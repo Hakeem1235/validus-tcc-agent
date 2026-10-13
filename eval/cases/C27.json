@@ -1,0 +1,32 @@
+{
+ "id": "C27",
+ "description": "Expired ARN in July 2026 (v4.0 not available -> v3.2: stays Regular, no code)",
+ "tags": [
+  "distributor",
+  "v3.2"
+ ],
+ "input": {
+  "request_id": "C27",
+  "received_at": "2026-07-15T11:00:00+05:30",
+  "channel": "email",
+  "from": "Nilgiri Finserv <ops@nilgiri.example>",
+  "to": "TCC Desk <tcc.desk@validus-rta.example>",
+  "cc": "",
+  "subject": "Purchase Ravi Kumar Bhat",
+  "body": "Additional purchase of Rs 40,000 in Narmada Large Cap Fund - Regular - Growth for our client Ravi Kumar Bhat, folio 40166450/93, NEFT from his registered Konkan Mercantile account ending 5475. ARN-297295 / EUIN E894442.",
+  "attachments": []
+ },
+ "expected": {
+  "request_type": "ADDITIONAL_PURCHASE",
+  "outcome": "PROCEED",
+  "reason_codes": [],
+  "approver_role": null,
+  "human_approval_required": false,
+  "checks": {
+   "DISTRIBUTOR_CODE": "FAIL"
+  },
+  "resolved": {
+   "folio_no": "40166450/93"
+  }
+ }
+}

@@ -1,0 +1,33 @@
+{
+ "id": "C28",
+ "description": "Suspended ARN (NMF) under v4.1",
+ "tags": [
+  "distributor"
+ ],
+ "input": {
+  "request_id": "C28",
+  "received_at": "2026-10-08T11:00:00+05:30",
+  "channel": "email",
+  "from": "Nexa Capital Advisors <ops@nexa.example>",
+  "to": "TCC Desk <tcc.desk@validus-rta.example>",
+  "cc": "",
+  "subject": "Additional purchase",
+  "body": "Rs 40,000 in Narmada Large Cap Fund - Regular - Growth for client Ravi Kumar Bhat, folio 40166450/93, NEFT from registered Konkan Mercantile account ending 5475. ARN-176204 / EUIN E852697.",
+  "attachments": []
+ },
+ "expected": {
+  "request_type": "ADDITIONAL_PURCHASE",
+  "outcome": "PROCEED_MODIFIED",
+  "reason_codes": [
+   "ARN_INVALID_DIRECT"
+  ],
+  "approver_role": "CHECKER",
+  "human_approval_required": true,
+  "checks": {
+   "DISTRIBUTOR_CODE": "FAIL"
+  },
+  "resolved": {
+   "folio_no": "40166450/93"
+  }
+ }
+}

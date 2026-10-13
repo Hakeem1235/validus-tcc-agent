@@ -1,0 +1,36 @@
+{
+ "id": "C22",
+ "description": "TMF redemption >= 5L within 30 days of an additional purchase (TMF-ADD-02 A1)",
+ "tags": [
+  "referral",
+  "tmf",
+  "addendum"
+ ],
+ "input": {
+  "request_id": "C22",
+  "received_at": "2026-10-08T11:00:00+05:30",
+  "channel": "email",
+  "from": "Deepak Choudhary <de****@rediffmail.com>",
+  "to": "TCC Desk <tcc.desk@validus-rta.example>",
+  "cc": "",
+  "subject": "Redeem corporate bond fund",
+  "body": "Please redeem Rs 6,00,000 from Tungabhadra Corporate Bond Fund, folio 71184287/96, to my registered account.",
+  "attachments": []
+ },
+ "expected": {
+  "request_type": "REDEMPTION",
+  "outcome": "HOLD_AND_REFER",
+  "reason_codes": [
+   "REFERRAL_TRIGGER"
+  ],
+  "approver_role": "OPS_MANAGER",
+  "human_approval_required": true,
+  "checks": {
+   "REFERRAL": "FAIL"
+  },
+  "resolved": {
+   "folio_no": "71184287/96",
+   "txn_id": "T261000035"
+  }
+ }
+}

@@ -1,0 +1,24 @@
+{
+ "id": "R06",
+ "description": "Own unregistered account, bank statement enclosed; duplicate pending row",
+ "tags": [
+  "inbox",
+  "tpp",
+  "data_issue"
+ ],
+ "input_ref": "inbox:R06",
+ "expected": {
+  "request_type": "ADDITIONAL_PURCHASE",
+  "outcome": "PROCEED",
+  "reason_codes": [],
+  "approver_role": null,
+  "human_approval_required": false,
+  "checks": {
+   "THIRD_PARTY_PAYMENT": "PASS"
+  },
+  "resolved": {
+   "folio_no": "40159954/10",
+   "txn_id": "T261000021"
+  }
+ }
+}

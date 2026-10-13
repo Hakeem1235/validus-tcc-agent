@@ -1,0 +1,35 @@
+{
+ "id": "C17",
+ "description": "Redemption 17 days after COB (outside cooling)",
+ "tags": [
+  "cob",
+  "redemption",
+  "proceed"
+ ],
+ "input": {
+  "request_id": "C17",
+  "received_at": "2026-10-07T10:00:00+05:30",
+  "channel": "email",
+  "from": "Vikram Shetty <vi****@outlook.com>",
+  "to": "TCC Desk <tcc.desk@validus-rta.example>",
+  "cc": "",
+  "subject": "Redemption folio 40177095/71",
+  "body": "Please redeem Rs 3,00,000 from Narmada Flexi Cap Fund, folio 40177095/71, to my registered Aravali Bank account.",
+  "attachments": []
+ },
+ "expected": {
+  "request_type": "REDEMPTION",
+  "outcome": "PROCEED",
+  "reason_codes": [],
+  "approver_role": null,
+  "human_approval_required": false,
+  "checks": {
+   "COB_COOLING": "PASS",
+   "BANK_MANDATE": "PASS"
+  },
+  "resolved": {
+   "folio_no": "40177095/71",
+   "txn_id": "T261000033"
+  }
+ }
+}

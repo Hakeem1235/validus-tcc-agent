@@ -1,0 +1,30 @@
+{
+ "id": "C32",
+ "description": "Redemption from a TMF scheme quoting an NMF folio -> identifiers conflict",
+ "tags": [
+  "identity"
+ ],
+ "input": {
+  "request_id": "C32",
+  "received_at": "2026-10-08T11:00:00+05:30",
+  "channel": "email",
+  "from": "Anil Saxena <an****@yahoo.co.in>",
+  "to": "TCC Desk <tcc.desk@validus-rta.example>",
+  "cc": "",
+  "subject": "Redemption",
+  "body": "Please redeem Rs 50,000 from Tungabhadra Midcap Fund, folio 40138985/28.",
+  "attachments": []
+ },
+ "expected": {
+  "request_type": "OTHER_OK",
+  "outcome": "INVALID_REQUEST",
+  "reason_codes": [
+   "FOLIO_PAN_MISMATCH"
+  ],
+  "approver_role": null,
+  "human_approval_required": false,
+  "checks": {
+   "FOLIO_IDENTITY": "FAIL"
+  }
+ }
+}

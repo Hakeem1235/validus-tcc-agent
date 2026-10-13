@@ -1,0 +1,36 @@
+{
+ "id": "C21",
+ "description": "Cash purchase takes FY total above Rs 50,000 (aggregated with May cash)",
+ "tags": [
+  "referral",
+  "cash"
+ ],
+ "input": {
+  "request_id": "C21",
+  "received_at": "2026-10-07T12:00:00+05:30",
+  "channel": "email",
+  "from": "Ramesh Chandra Gupta <ra****@gmail.com>",
+  "to": "TCC Desk <tcc.desk@validus-rta.example>",
+  "cc": "",
+  "subject": "Cash deposit",
+  "body": "I deposited Rs 35,000 in cash at your branch today for Tungabhadra Balanced Advantage Fund Direct, folio 71173574/68.",
+  "attachments": []
+ },
+ "expected": {
+  "request_type": "ADDITIONAL_PURCHASE",
+  "outcome": "REJECT",
+  "reason_codes": [
+   "CASH_LIMIT_BREACH"
+  ],
+  "approver_role": "CHECKER",
+  "human_approval_required": true,
+  "checks": {
+   "REFERRAL": "FAIL",
+   "THIRD_PARTY_PAYMENT": "NOT_APPLICABLE"
+  },
+  "resolved": {
+   "folio_no": "71173574/68",
+   "txn_id": "T261000049"
+  }
+ }
+}

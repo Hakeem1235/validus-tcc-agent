@@ -1,0 +1,59 @@
+{
+ "id": "C11",
+ "description": "Employer payroll SIP with every 5.3 document enclosed",
+ "tags": [
+  "tpp",
+  "employer"
+ ],
+ "input": {
+  "request_id": "C11",
+  "received_at": "2026-10-07T15:02:00+05:30",
+  "channel": "email",
+  "from": "HR Payroll - Deccan Polymers <payroll@deccanpolymers.example>",
+  "to": "TCC Desk <tcc.desk@validus-rta.example>",
+  "cc": "",
+  "subject": "Payroll SIP - Sandeep Yadav (Emp DP-4471) - complete documents",
+  "body": "Dear Team, Please find our payroll-deduction SIP of Rs 5,000 for our employee Sandeep Yadav (DP-4471), Tungabhadra Large & Mid Cap Fund - Direct - Growth, folio 71138631/21, remitted by NEFT from our company account on 07-Oct-2026. All documents are attached. Regards, Kavya Rao, HR Operations",
+  "attachments": [
+   {
+    "file_name": "TPP_declaration.txt",
+    "content_type": "text/plain",
+    "content_base64": "VEhJUkQgUEFSVFkgUEFZTUVOVCBERUNMQVJBVElPTiBGT1JNCkJlbmVmaWNpYWwgaW52ZXN0b3I6IFNhbmRlZXAgWWFkYXYKRm9saW86IDcxMTM4NjMxLzIxClRoaXJkIHBhcnR5OiBEZWNjYW4gUG9seW1lcnMgUHZ0IEx0ZApSZWxhdGlvbnNoaXA6IEVtcGxveWVyClNpZ25lZDogS2F2eWEgUmFvCg=="
+   },
+   {
+    "file_name": "Employer_letter.txt",
+    "content_type": "text/plain",
+    "content_base64": "REVDQ0FOIFBPTFlNRVJTIFBWVCBMVEQKQ29uZmlybWF0aW9uIG9mIHBheXJvbGwgZGVkdWN0aW9uIC0gZW1wbG95ZWUgU0lQCldlIGNvbmZpcm0gcGF5cm9sbCBkZWR1Y3Rpb24gZm9yIGVtcGxveWVlIFNhbmRlZXAgWWFkYXYgKERQLTQ0NzEpLCBScyA1LDAwMCBwZXIgbW9udGguCg=="
+   },
+   {
+    "file_name": "Employee_list.txt",
+    "content_type": "text/plain",
+    "content_base64": "TElTVCBPRiBFTVBMT1lFRVMKRW1wbG95ZWUgY29kZSB8IE5hbWUgfCBQQU4gfCBLWUMKRFAtNDQ3MSB8IFNhbmRlZXAgWWFkYXYgfCBCQVJQWSoqNjlaIHwgVmFsaWRhdGVkCg=="
+   },
+   {
+    "file_name": "KYC_ack_investor.txt",
+    "content_type": "text/plain",
+    "content_base64": "S1lDIEFDS05PV0xFREdFTUVOVCBPRiBJTlZFU1RPUgpOYW1lOiBTYW5kZWVwIFlhZGF2ICBQQU46IEJBUlBZKio2OVogIFN0YXR1czogS1lDIFZhbGlkYXRlZAo="
+   },
+   {
+    "file_name": "KYC_ack_employer.txt",
+    "content_type": "text/plain",
+    "content_base64": "S1lDIEFDS05PV0xFREdFTUVOVCBPRiBFTVBMT1lFUgpEZWNjYW4gUG9seW1lcnMgUHZ0IEx0ZCAgUEFOOiBSTFZDTCoqODhZICBTdGF0dXM6IEtZQyBWYWxpZGF0ZWQK"
+   }
+  ]
+ },
+ "expected": {
+  "request_type": "SIP_REGISTRATION",
+  "outcome": "PROCEED",
+  "reason_codes": [],
+  "approver_role": null,
+  "human_approval_required": false,
+  "checks": {
+   "THIRD_PARTY_PAYMENT": "PASS"
+  },
+  "resolved": {
+   "folio_no": "71138631/21",
+   "txn_id": "T261000011"
+  }
+ }
+}
