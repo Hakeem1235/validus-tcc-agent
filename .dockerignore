@@ -1,0 +1,9 @@
+.venv
+.git
+build
+**/__pycache__
+.pytest_cache
+.env
+eval/results
+docs
+tests
