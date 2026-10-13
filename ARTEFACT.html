@@ -1,13 +1,347 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Artefact</title>
-</head>
-<body>
-  <p>
-    Fill this file with the written deliverable your problem brief asks for (for example, a
-    Reconciliation Report). The grader reads this exact file — do not rename or move it.
-  </p>
-</body>
-</html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TCC Agent Artefact</title><style>
+:root{--bg:#fbfaf7;--fg:#1d2328;--muted:#5b6670;--line:#e2ded6;--accent:#0f5f73;--head:#f1eee8;--good:#1f7a4d;--bad:#a8321f}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14181b;--fg:#e6e9ec;--muted:#9aa5ae;--line:#2b3238;--accent:#6cc3d5;--head:#1c2226;--good:#5fcf95;--bad:#f08a76}}
+:root[data-theme="dark"]{--bg:#14181b;--fg:#e6e9ec;--muted:#9aa5ae;--line:#2b3238;--accent:#6cc3d5;--head:#1c2226;--good:#5fcf95;--bad:#f08a76}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:960px;margin:0 auto;padding:32px 16px 64px}
+h1{font-size:1.7rem;margin:.2em 0 .6em;letter-spacing:-.01em}h2{font-size:1.2rem;margin:2em 0 .6em;padding-top:.6em;border-top:1px solid var(--line)}
+a{color:var(--accent)}p,li{max-width:75ch}code{font-size:.9em;background:var(--head);padding:1px 5px;border-radius:4px}
+.tw{overflow-x:auto;margin:12px 0}table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{border-bottom:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}th{background:var(--head);font-weight:600}
+td:first-child{white-space:nowrap}strong{font-weight:650}
+</style></head><body><main><h1>Artefact: Validus TCC Desk Compliance Agent</h1>
+<p>All numbers come from <code>python scripts/prepare_data.py</code> (<code>build/</code>) and the timestamped runs in <a href="eval/results/">eval/results/</a>. Design: <a href="APPROACH.md">APPROACH.md</a> · Workflow: <a href="FUTURE_WORKFLOW.md">FUTURE_WORKFLOW.md</a> · Setup: <a href="README.md">README.md</a>.</p>
+<h2>1. Record counts per extract (raw → loaded; no rows dropped)</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>extract</th>
+<th>rows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>folio_master.csv</td>
+<td>83 → 83</td>
+</tr>
+<tr>
+<td>bank_mandates.csv</td>
+<td>105 → 105</td>
+</tr>
+<tr>
+<td>kra_kyc_snapshot.csv</td>
+<td>95 → 95</td>
+</tr>
+<tr>
+<td>transactions.csv</td>
+<td>522 → 522</td>
+</tr>
+<tr>
+<td>distributor_master.csv</td>
+<td>32 → 32</td>
+</tr>
+<tr>
+<td>policy clauses</td>
+<td>104 (SOP v4.1: 50, SOP v3.2: 50, TMF-ADD-02: 4)</td>
+</tr>
+</tbody>
+</table></div>
+<h2>2. Data issues and handling</h2>
+<p>There are 44 entries in <code>build/data_issues.json</code>, grouped below. Raw files are never edited; every fix is applied in code.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>issue</th>
+<th>where / count</th>
+<th>handling</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Negative units and NAV</td>
+<td>T181000029 (units −682,982.356, NAV −0.8785), folio 40115267/30</td>
+<td>Flagged; units/NAV never used; warning on any request for that folio (R10)</td>
+</tr>
+<tr>
+<td>Exact duplicate transactions (same folio, type, amount, date, UTR; ID differs by an inserted "5")</td>
+<td>4 pairs: T260200500/T260250500, T260300243/T260350243, T260700290/T260750290, <strong>T261000021/T261050021 (pending, R06)</strong></td>
+<td>Later ID marked <code>duplicate_of</code>; excluded from every aggregation; a pending match resolves to the first ID with a "process once" warning</td>
+</tr>
+<tr>
+<td>Folio in non-canonical form (<code>40152726-27</code>, <code>4019387051</code>, <code>71178761 / 80</code>, trailing space)</td>
+<td>56 transaction rows</td>
+<td>Normalised to <code>XXXXXXXX/XX</code>; raw kept in <code>folio_no_raw</code>; same normaliser for emails</td>
+</tr>
+<tr>
+<td>Dates as DD-MM-YYYY</td>
+<td>53 transaction rows (e.g. T261000009, T261000044)</td>
+<td>Parsed to ISO; raw kept in <code>txn_date_raw</code></td>
+</tr>
+<tr>
+<td>Regular plan with blank ARN/EUIN</td>
+<td>36 historical rows</td>
+<td>Flagged; a pending Regular row with no ARN counts as invalid ARN (7.2)</td>
+</tr>
+<tr>
+<td>KRA code lost its leading zeros (<code>7</code> for CVL <code>007</code>)</td>
+<td>8 PANs (e.g. URFPP**04D, the minor who turned 18)</td>
+<td>Left-padded; first digit checked against <code>kra_name</code></td>
+</tr>
+<tr>
+<td>KRA status text blank</td>
+<td>6 PANs (incl. HLZPR**12H, code 203 = On Hold)</td>
+<td>Status derived from the code (the code governs); eval case C05</td>
+</tr>
+<tr>
+<td>KRA text variants ("KYC VALIDATED" / "KYC Validated" / "Validated")</td>
+<td>snapshot-wide</td>
+<td>Case-insensitive synonym map. A code/text or agency contradiction would give UNABLE_TO_VERIFY (none in this snapshot; guard unit-tested)</td>
+</tr>
+<tr>
+<td>All KRA lookups at 2026-10-09 06:00, after the R01–R10 receipt times</td>
+<td>95 rows</td>
+<td>24h staleness measured against <code>received_at</code>; a later lookup counts as fresh</td>
+</tr>
+<tr>
+<td>Holder names abbreviated, salutation-prefixed or reversed vs KRA ("B. Gupta", "Mr. Yusuf Shah", "Hegde Ajay")</td>
+<td>17 folios</td>
+<td>Identity by folio + PAN; tolerant name match used only to corroborate</td>
+</tr>
+<tr>
+<td>Account masks of different lengths (11 vs 12 characters)</td>
+<td>13 of 105 mandates</td>
+<td>Accounts matched on the last 4 digits within the folio</td>
+</tr>
+<tr>
+<td>SOP v3.2 PDF "SUPERSEDED" watermark letters injected into the text</td>
+<td>all pages</td>
+<td>pdfplumber character filter (drops glyphs &gt; 20pt and the grey header/footer); test asserts clean 5.4 text</td>
+</tr>
+<tr>
+<td>Policy versions referenced but not supplied: SOP v4.0 (2026-06-01), TMF-ADD-01 (2026-03-01)</td>
+<td>revision history / supersedes line</td>
+<td>Requests in those windows use the previous version with a warning (eval C27)</td>
+</tr>
+</tbody>
+</table></div>
+<h2>3. Policy documents, versions and selection</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>document</th>
+<th>version</th>
+<th>effective</th>
+<th>scope</th>
+<th>source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TCC-SOP</td>
+<td>4.1</td>
+<td>2026-08-01</td>
+<td>NMF, TMF</td>
+<td>Validus_TCC_SOP_v4.1.docx</td>
+</tr>
+<tr>
+<td>TCC-SOP</td>
+<td>4.0</td>
+<td>2026-06-01</td>
+<td>NMF, TMF</td>
+<td><em>not supplied → v3.2 + warning</em></td>
+</tr>
+<tr>
+<td>TCC-SOP</td>
+<td>3.2</td>
+<td>2025-01-01</td>
+<td>NMF, TMF</td>
+<td>Validus_TCC_SOP_v3.2.pdf</td>
+</tr>
+<tr>
+<td>TMF-ADD-02</td>
+<td>02</td>
+<td>2026-09-15</td>
+<td>TMF only, prevails</td>
+<td>Tungabhadra_MF_Client_Addendum_TMF-ADD-02.pdf</td>
+</tr>
+</tbody>
+</table></div>
+<p>Selection (<a href="app/tools/policy.py">tools/policy.select</a>): the latest SOP whose effective date is on or before <code>received_at</code>, plus the latest addendum for the folio's AMC in force on that date. Clause retrieval is filtered to those versions.</p>
+<p>Key version differences encoded in <a href="app/policy/rules.yaml">rules.yaml</a>:
+- <strong>5.3/5.4:</strong> grandparent payments for a minor are allowed up to ₹50k with documents under v3.2, and rejected under v4.1.
+- <strong>6.4:</strong> 10-day COB cooling exists only under v4.1.
+- <strong>7.2:</strong> an invalid ARN means Direct under v4.1, and stays Regular with 30 days to fix under v3.2.</p>
+<h2>4. Evaluation set</h2>
+<p><strong>44 cases</strong> (<a href="eval/cases/">eval/cases/</a>):
+- R00 (CURRENT_WORKFLOW worked example)
+- R01–R10 (inbox)
+- 33 scenarios on real records</p>
+<p>Expected outcomes by case:</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>expected outcome</th>
+<th>count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PROCEED</td>
+<td>15</td>
+</tr>
+<tr>
+<td>PEND</td>
+<td>13</td>
+</tr>
+<tr>
+<td>REJECT</td>
+<td>6</td>
+</tr>
+<tr>
+<td>HOLD_AND_REFER</td>
+<td>4</td>
+</tr>
+<tr>
+<td>PROCEED_MODIFIED</td>
+<td>3</td>
+</tr>
+<tr>
+<td>INVALID_REQUEST</td>
+<td>3</td>
+</tr>
+</tbody>
+</table></div>
+<p>Reason codes covered:
+- <strong>All 17 codes</strong> in SOP 9.3 are covered by the unit tests (<a href="tests/">tests/</a>, 113 tests, including KRA codes 01/04/05 on synthetic rows).
+- <strong>16 of 17</strong> appear in the eval: KYC_ON_HOLD, KYC_REGISTERED_NEW_AMC, KYC_UNABLE_TO_VERIFY, TPP_NO_EXCEPTION, TPP_DOCS_MISSING, BANK_PROOF_REQUIRED, MINOR_ATTAINED_MAJORITY, COB_COOLING, HIGH_RISK_CONTACT_COB, ARN_INVALID_DIRECT, EUIN_MISSING, REFERRAL_TRIGGER, STOP_LOCK, CASH_LIMIT_BREACH, FOLIO_NOT_FOUND, FOLIO_PAN_MISMATCH.
+- <strong>KYC_REJECTED</strong> has no record in the data room, so it is unit-tested only.
+- <strong>The 25L/14-day trigger</strong> cannot occur in the data (no transaction ≥ ₹25L). It is unit-tested on synthetic rows, and the eval checks a ₹30L purchase does not raise a false referral (C29).</p>
+<h2>5. First run ("before", <a href="eval/results/20261013T065806Z_before.md">20261013T065806Z_before.md</a>)</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>metric</th>
+<th>before</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>outcome accuracy</td>
+<td><strong>93.2%</strong> (41/44)</td>
+</tr>
+<tr>
+<td>reason codes exact</td>
+<td>88.6%</td>
+</tr>
+<tr>
+<td>check-level accuracy</td>
+<td>92.3%</td>
+</tr>
+<tr>
+<td>approver accuracy</td>
+<td>97.7%</td>
+</tr>
+<tr>
+<td>request-type accuracy</td>
+<td>90.2%</td>
+</tr>
+<tr>
+<td><strong>unsafe errors</strong></td>
+<td><strong>1</strong> (C24: TMF change of bank → PROCEED_MODIFIED instead of PEND BANK_PROOF_REQUIRED)</td>
+</tr>
+<tr>
+<td><strong>over-cautious errors</strong></td>
+<td><strong>2</strong> (C14 joint-account proof misread → PEND; C26 v3.2 grandparent payer-KYC document not recognised → PEND)</td>
+</tr>
+</tbody>
+</table></div>
+<h2>6. The one change</h2>
+<p><strong>Top failure class:</strong> requests with no transaction of their own inherited an unrelated pending transaction on the same folio.
+- Affected 4 of the 5 failures: C24, C25, C30, C31.
+- C24 was the unsafe error: Aditi Menon's COB email picked up her pending ADD with an expired ARN, so it was classified as a purchase and proposed for PROCEED_MODIFIED.</p>
+<p><strong>Change</strong> (<a href="app/s3_resolve.py">s3_resolve._match_txn</a>):
+- A transaction is attached only with positive evidence: a UTR, amount or paying account that matches, or a compatible type.
+- Change-of-bank and out-of-scope requests attach one only on an exact UTR.</p>
+<p><strong>Follow-ups this exposed:</strong>
+- The first re-run (<a href="eval/results/20261013T065848Z_fix1.md">fix1</a>) removed the unsafe error but showed that three purchases (C02 Hindi-English, C11, C21 cash) had only been classified correctly because of the stray match.
+- The rule-based intent classifier was therefore changed to return "unknown", not OTHER, when it has no signal.
+- Two parsing defects were also fixed: the single-line account regex (C14) and the KYC_PAYER document type (C26).</p>
+<h2>7. After (<a href="eval/results/20261013T065933Z_after.md">20261013T065933Z_after.md</a>; also over HTTP: <a href="eval/results/20261013T070020Z_http_local.md">20261013T070020Z_http_local.md</a>)</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>metric</th>
+<th>before</th>
+<th>after</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>outcome accuracy</td>
+<td>93.2%</td>
+<td><strong>100%</strong> (44/44)</td>
+</tr>
+<tr>
+<td>reason codes exact</td>
+<td>88.6%</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>check-level accuracy</td>
+<td>92.3%</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>approver accuracy</td>
+<td>97.7%</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>request-type accuracy</td>
+<td>90.2%</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>unsafe errors</td>
+<td>1</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>over-cautious errors</td>
+<td>2</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>HTTP non-200</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>median latency</td>
+<td>8 ms</td>
+<td>8 ms in-process / 6 ms over local HTTP</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Read with care:</strong> I wrote these 44 cases alongside the rules, and the last fixes were made against them. 100% shows the regression suite passes; it does not predict accuracy on hidden requests.</p>
+<h2>8. Cost per request</h2>
+<ul>
+<li><strong>Median cost per request is $0.00 with 0 model calls.</strong> No LLM key was available in this environment, so every run used the rule-based extraction and template replies (<code>extraction_method: "rules"</code>, <code>reply_method: "template"</code>).</li>
+<li><strong>With <code>LLM_API_KEY</code> set</strong>, the trace records real <code>usage_metadata</code> token counts per call (extraction, vision per image, reply polish) and prices them from <a href="app/config.py">app/config.py</a>. That cost has <strong>not been measured yet</strong>: run <code>python eval/run_eval.py --label llm</code> with a key to get it.</li>
+</ul>
+<h2>9. Not built, fragile, next</h2>
+<p><strong>Not built:</strong>
+- S9 human review queue
+- email sending and the persistent case log (SOP 9.5)
+- policy-update assistant (S10)
+- public deployment: Docker and the GitHub CLI were not available here. <code>Dockerfile</code> and <code>render.yaml</code> are written and a clean-copy production start was smoke-tested locally; the public URL step is still to do.</p>
+<p><strong>Fragile:</strong>
+- Rule-based extraction of relationships, documents and intent on unusual wording when no LLM is configured.
+- Scanned images without vision are typed from the file name only. The error goes towards PEND, never towards accepting.
+- Single-transaction assumption per email.
+- Interpretations D1–D8 in <a href="docs/analysis.md">docs/analysis.md</a>.</p>
+<p><strong>Next:</strong>
+1. Run the eval with Gemini enabled and record cost and latency.
+2. Add 200+ real labelled desk cases as a held-out set.
+3. Shadow mode against makers for a month.
+4. Then consider auto-sending maker-only outcomes with no warnings (see FUTURE_WORKFLOW §4).</p></main></body></html>

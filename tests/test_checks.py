@@ -62,6 +62,23 @@ class TestKYC:
         c.first_holder_pan = "NOPAN**00X"
         assert kyc.run(c).result == "UNABLE_TO_VERIFY"
 
+    def test_rejected_purchase_and_redemption(self):
+        c = make_case("ADDITIONAL_PURCHASE")
+        c.first_holder_pan = "REJEC**03R"
+        r = kyc.run(c)
+        assert r.reason_codes == ["KYC_REJECTED"] and decide([r]).outcome == "REJECT"
+        c = make_case("REDEMPTION")
+        c.first_holder_pan = "REJEC**03R"
+        d = decide([kyc.run(c)])
+        assert (d.outcome, d.approver_role) == ("HOLD_AND_REFER", "OPS_MANAGER")
+
+    def test_under_process_and_not_available_utv(self):
+        for pan in ("UNDPR**04U", "NOTAV**05N"):
+            c = make_case("ADDITIONAL_PURCHASE")
+            c.first_holder_pan = pan
+            r = kyc.run(c)
+            assert (r.result, r.reason_codes) == ("UNABLE_TO_VERIFY", ["KYC_UNABLE_TO_VERIFY"])
+
     def test_minor_checks_minor_pan(self):
         r = kyc.run(make_case("ADDITIONAL_PURCHASE", "40173612/78", "T261000009"))
         assert r.result == "PASS" and "minor RRBPK**06M" in r.evidence[0].value

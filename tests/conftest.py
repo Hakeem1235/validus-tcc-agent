@@ -56,6 +56,12 @@ def test_db(tmp_path_factory):
     _insert(con, "kra_kyc_snapshot", "pan_masked='YBZPB**44W'",
             {"pan_masked": "CONFL**02C", "name_as_per_kra": "CONFLICT PERSON", "status_from_text": "ON_HOLD",
              "code_text_conflict": 1, "kra_status": "ON HOLD"})
+    for pan, code, status, text in [("REJEC**03R", "304", "REJECTED", "KYC REJECTED"),
+                                    ("UNDPR**04U", "001", "UNDER_PROCESS", "UNDER PROCESS"),
+                                    ("NOTAV**05N", "105", "NOT_AVAILABLE", "NOT AVAILABLE")]:
+        _insert(con, "kra_kyc_snapshot", "pan_masked='YBZPB**44W'",
+                {"pan_masked": pan, "kra_status_code": code, "status_from_code": status, "status_from_text": status,
+                 "kra_status": text, "kra_name": {"3": "CAMS", "0": "CVL", "1": "NDML"}[code[0]]})
     _insert(con, "bank_mandates", "folio_no='40166450/93'",
             {"folio_no": SYNTH_FOLIO, "account_no_masked": "XXXXXXXX1111", "account_last4": "1111",
              "account_holders": "TEST INVESTOR"})
